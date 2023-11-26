@@ -1,0 +1,70 @@
+<div class="w-screen h-screen max-w-full relative">
+  <div
+    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border border-project-neutral rounded-[10px] p-8"
+  >
+    <header class="flex flex-col items-center pt-10 pb-8">
+      <h2 class="font-monasans font-bold text-base leading-6 pb-8">
+        Create your account
+      </h2>
+      <img src="./assets/img/logo.png" alt="" />
+    </header>
+
+    <form [formGroup]="form" (ngSubmit)="handleSubmit()" class="flex flex-col">
+      <label for="email" class="font-monasans font-normal text-base leading-6"
+        >Email address
+      </label>
+      <input
+        class="border border-project-neutral rounded-md p-2 w-80 mt-3 mb-8 focus:outline-project-blue-100"
+        type="text"
+        formControlName="email"
+        placeholder="email"
+      />
+      <label
+        for="password"
+        class="font-monasans font-normal text-base leading-6"
+        >Password</label
+      >
+      <input
+        class="border border-project-neutral rounded-md p-2 w-80 mt-3 focus:outline-project-blue-100"
+        type="password"
+        formControlName="password"
+        placeholder="password"
+      />
+      <p
+        class="my-1 text-project-red-500 text-center font-monasans text-xs font-medium leading-6 max-w-xs"
+        [ngClass]="errorMessage ? 'visible' : 'invisible'"
+      >
+        {{ errorMessage || "Error" }}
+      </p>
+      <button
+        [disabled]="isLoading || !form.valid || form.pristine || errorMessage"
+        type="submit"
+        class="w-80 p-2 bg-project-blue-200 text-white font-monasans font-normal text-base rounded-md focus:outline-project-blue-100 disabled:bg-project-black-100 transition duration-300 ease-in-out"
+      >
+        Continue
+      </button>
+      <p class="py-4 text-center font-monasans text-xs font-medium leading-6">
+        <span>Already have an account? </span>
+        <span class="text-project-blue-200"
+          ><a routerLink="/signin" class="focus:outline-project-blue-100"
+            >Log in</a
+          ></span
+        >
+      </p>
+      <div class="relative flex pb-8 items-center">
+        <div class="flex-grow border-t border-project-neutral-400"></div>
+        <span
+          class="flex-shrink mx-4 font-monasans text-xs font-medium leading-6"
+          >OR</span
+        >
+        <div class="flex-grow border-t border-project-neutral-400"></div>
+      </div>
+      <a
+        [href]="googleOAuthURL"
+        class="flex gap-[10px] border border-project-neutral rounded-md p-2 w-80 px-8 py-2 font-monasans font-normal text-base leadiong-6 focus:outline-project-blue-100"
+      >
+        <img src="./assets/icons/google.svg" alt="" />Continue with Google
+      </a>
+    </form>
+  </div>
+</div>
