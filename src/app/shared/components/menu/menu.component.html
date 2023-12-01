@@ -1,0 +1,102 @@
+<div
+  class="w-full h-[68px] flex flex-row items-center justify-between px-[100px] border-b border-project-neutral-100"
+>
+  <img src="./assets/img/logo.png" alt="" />
+  <nav class="flex flex-row" #nav>
+    <button
+      class="flex flex-row px-8 py-2 gap-2 font-monasans text-base font-medium rounded-full relative w-100 text-project-black-200"
+      [routerLinkActive]="['active']"
+      [routerLink]="'/home'"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 256 256"
+      >
+        <path
+          class="fill-project-black-200"
+          [routerLinkActive]="['fill-project-blue-100']"
+          [routerLinkActiveOptions]="{ exact: true }"
+          fill="currentColor"
+          d="M80 40a40 40 0 1 0 40 40a40 40 0 0 0-40-40m0 64a24 24 0 1 1 24-24a24 24 0 0 1-24 24m96 16a40 40 0 1 0-40-40a40 40 0 0 0 40 40m0-64a24 24 0 1 1-24 24a24 24 0 0 1 24-24m-96 80a40 40 0 1 0 40 40a40 40 0 0 0-40-40m0 64a24 24 0 1 1 24-24a24 24 0 0 1-24 24m96-64a40 40 0 1 0 40 40a40 40 0 0 0-40-40m0 64a24 24 0 1 1 24-24a24 24 0 0 1-24 24"
+        />
+      </svg>
+      <span
+        class="max-w-0 overflow-hidden transition-all duration-500 ease-linear"
+        [routerLinkActive]="['max-w-[100px]']"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Templates
+      </span>
+    </button>
+
+    <button
+      class="flex flex-row px-8 py-2 gap-2 font-monasans text-base font-medium rounded-full relative w-100 text-project-black-200"
+      [routerLinkActive]="['active']"
+      [routerLink]="'/signin'"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 256 256"
+      >
+        <path
+          class="fill-project-black-200"
+          [routerLinkActive]="['fill-project-blue-100']"
+          [routerLinkActiveOptions]="{ exact: true }"
+          fill="currentColor"
+          d="M216 80h-32V48a16 16 0 0 0-16-16H40a16 16 0 0 0-16 16v128a8 8 0 0 0 13 6.22L72 154v30a16 16 0 0 0 16 16h93.59L219 230.22a8 8 0 0 0 5 1.78a8 8 0 0 0 8-8V96a16 16 0 0 0-16-16M66.55 137.78L40 159.25V48h128v88H71.58a8 8 0 0 0-5.03 1.78ZM216 207.25l-26.55-21.47a8 8 0 0 0-5-1.78H88v-32h80a16 16 0 0 0 16-16V96h32Z"
+        />
+      </svg>
+      <span
+        class="max-w-0 overflow-hidden transition-all duration-500 ease-linear"
+        [routerLinkActive]="['max-w-[100px]']"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Chats
+      </span>
+    </button>
+
+    <button
+      #home
+      id="home"
+      class="flex flex-row px-8 py-2 gap-2 font-monasans text-base font-medium rounded-full relative w-100 text-project-black-200"
+      [routerLinkActive]="['active']"
+      [routerLink]="'/signup'"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 256 256"
+      >
+        <path
+          class="fill-project-black-200"
+          [routerLinkActive]="['fill-project-blue-100']"
+          [routerLinkActiveOptions]="{ exact: true }"
+          fill="currentColor"
+          d="M168 152a8 8 0 0 1-8 8H96a8 8 0 0 1 0-16h64a8 8 0 0 1 8 8m-8-40H96a8 8 0 0 0 0 16h64a8 8 0 0 0 0-16m56-64v168a16 16 0 0 1-16 16H56a16 16 0 0 1-16-16V48a16 16 0 0 1 16-16h36.26a47.92 47.92 0 0 1 71.48 0H200a16 16 0 0 1 16 16M96 64h64a32 32 0 0 0-64 0m104-16h-26.75A47.93 47.93 0 0 1 176 64v8a8 8 0 0 1-8 8H88a8 8 0 0 1-8-8v-8a47.93 47.93 0 0 1 2.75-16H56v168h144Z"
+        />
+      </svg>
+      <span
+        class="max-w-0 overflow-hidden transition-all duration-500 ease-linear"
+        [routerLinkActive]="['max-w-[100px]']"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        History
+      </span>
+    </button>
+  </nav>
+  <div class="flex flex-row items-center">
+    <span class="font-monasans font-medium text-[15px] pr-[6px]">{{
+      name
+    }}</span>
+    <img src="./assets/icons/chevron_down.svg" alt="" class="pr-3" />
+    <img class="w-[40px] h-[40px] rounded-full" src="{{ photoUrl }}" alt="" />
+  </div>
+</div>

@@ -3,6 +3,7 @@ import { HomeComponent } from './modules/home/home.component';
 import { authGuard } from './shared/guards/auth.guard';
 import { SigninComponent } from './modules/signin/signin.component';
 import { SignupComponent } from './modules/signup/signup.component';
+import { TemplatesComponent } from './modules/home/pages/templates/templates.component';
 
 export const routes: Routes = [
   {
@@ -10,6 +11,7 @@ export const routes: Routes = [
     component: HomeComponent,
     canActivate: [authGuard],
     title: 'Home',
+    children: [{ path: '', component: TemplatesComponent, title: 'A' }],
   },
   {
     path: 'signin',
