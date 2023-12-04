@@ -38,16 +38,31 @@
   }
 }
 
+@keyframes maxWidthMD {
+  to {
+    width: 72px;
+  }
+}
+
 .active:nth-child(1) ~ #home:before {
   transform: translateX(-267px);
   animation: maxWidthFirst 500ms linear forwards;
+  @media (max-width: 767px) {
+    transform: translateX(-200%);
+    animation: maxWidthMD 500ms linear forwards;
+  }
 }
 
 .active:nth-child(2) ~ #home:before {
   transform: translateX(-100%);
   animation: maxWidthSecond 500ms linear forwards;
+  @media (max-width: 767px) {
+    animation: maxWidthMD 500ms linear forwards;
+  }
 }
 .active:nth-child(3):before {
   transform: translateX(0) !important;
-  animation: maxWidthThird 500ms linear forwards;
+  @media (max-width: 767px) {
+    animation: maxWidthMD 500ms linear forwards;
+  }
 }
