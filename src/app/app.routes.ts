@@ -4,8 +4,8 @@ import { authGuard } from './shared/guards/auth.guard';
 import { SigninComponent } from './modules/signin/signin.component';
 import { SignupComponent } from './modules/signup/signup.component';
 import { TemplatesComponent } from './modules/home/pages/templates/templates.component';
-import { AComponent } from './modules/home/pages/a/a.component';
 import { BComponent } from './modules/home/pages/b/b.component';
+import { ChatComponent } from './modules/chat/chat.component';
 
 export const routes: Routes = [
   {
@@ -15,9 +15,15 @@ export const routes: Routes = [
     title: 'Home',
     children: [
       { path: '', component: TemplatesComponent, title: 'A' },
-      { path: 'b', component: AComponent, title: 'B' },
+      { path: 'history', component: BComponent, title: 'History' },
       { path: 'c', component: BComponent, title: 'C' },
     ],
+  },
+  {
+    path: 'chat/:slug',
+    component: ChatComponent,
+    canActivate: [authGuard],
+    title: 'Chat',
   },
   {
     path: 'signin',

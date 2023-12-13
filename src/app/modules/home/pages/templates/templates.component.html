@@ -8,21 +8,21 @@
         #templateList
         class="flex flex-row overflow-x-scroll scrollbar-none gap-3 scroll-smooth pe-10"
       >
-        @for(t of template_categories; track t.template_category_id){
+        @for(c of categories; track c.category_id){
         <button
-          (click)="selectTemplate(t.template_category_id)"
+          (click)="selectTemplate(c.category_id)"
           class="px-4 py-3 font-monasans font-medium text-sm text-project-black-500 whitespace-nowrap rounded-full border border-project-black-50 cursor-pointer transition-colors duration-200 ease-in"
-          [ngClass]="t.isAtive ? 'bg-project-black-50' : ''"
+          [ngClass]="c.isAtive ? 'bg-project-black-50' : ''"
         >
-          {{ t.name }}
+          {{ c.name }}
         </button>
         }
       </div>
     </div>
     }
 
-    <div class="flex flex-row gap-7 me-auto sm:ms-auto sm:me-0 z-10">
-      <div class="relative">
+    <div class="flex flex-row gap-7 sm:ms-auto z-10 w-full sm:w-auto">
+      <div class="relative flex-1 sm:flex-none">
         <svg
           class="absolute left-8 top-3"
           xmlns="http://www.w3.org/2000/svg"
@@ -99,48 +99,34 @@
     class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 grid-flow-row gap-4 px-6 md:px-10 lg:px-[100px]"
   >
     @for(t of filteredTemplates; track t.template_id) {
-    <div class="p-6 rounded-[10px] border border-project-neutral max-h-60">
-      <div class="flex items-center gap-4 pb-4">
-        <img
-          [src]="t.icon_url"
-          alt=""
-          class="w-9 h-9 object-cover rounded-full"
-        />
-        <span>{{ t.name }}</span>
-      </div>
-      <p class="h-auto w-full line-clamp-6">
-        {{ t.description }}
-      </p>
-    </div>
+    <app-card
+      [slug]="t.slug"
+      [description]="t.description"
+      [icon_url]="
+        'https://www.myany.city/sites/default/files/styles/scaled_cropped_medium__260x260/public/field/image/node-related-images/sample-dwight-k-schrute.jpg?itok=8TfRscbA'
+      "
+      [name]="t.name"
+    ></app-card>
     }
   </div>
   } @else {
-  <div class="sm:absolute sm:top-0">
-    @for(template of templatesListMode; track template.template_category_id) {
-    <div class="px-6 md:px-10 lg:px-[100px] py-5">
-      <button
-        class="px-4 py-3 font-monasans font-medium text-sm text-project-black-500 whitespace-nowrap rounded-full border border-project-black-50 cursor-pointer transition-colors duration-200 ease-in bg-project-black-50"
-      >
-        {{ templateCategoryName(template.template_category_id) }}
-      </button>
-    </div>
+  <div class="sm:absolute sm:top-0 pb-5">
+    @for(template of templatesListMode; track template.category_id) {
+    <app-category-button
+      [name]="categoryName(template.category_id)"
+    ></app-category-button>
     <div
       class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 grid-flow-row gap-4 px-6 md:px-10 lg:px-[100px]"
     >
       @for(t of template.templates; track t.template_id) {
-      <div class="p-6 rounded-[10px] border border-project-neutral max-h-60">
-        <div class="flex items-center gap-4 pb-4">
-          <img
-            [src]="t.icon_url"
-            alt=""
-            class="w-9 h-9 object-cover rounded-full"
-          />
-          <span>{{ t.name }}</span>
-        </div>
-        <p class="h-auto w-full line-clamp-6">
-          {{ t.description }}
-        </p>
-      </div>
+      <app-card
+        [slug]="t.slug"
+        [description]="t.description"
+        [icon_url]="
+          'https://s2.glbimg.com/-9lG_NCCu26MsBAWtrWHr5Cl7Ag=/620x413/smart/e.glbimg.com/og/ed/f/original/2017/12/19/michael-scott-the-office.png'
+        "
+        [name]="t.name"
+      ></app-card>
       }
     </div>
     }

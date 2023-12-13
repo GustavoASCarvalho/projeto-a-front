@@ -1,0 +1,28 @@
+<div class="flex flex-col gap-3">
+  <div
+    class="flex justify-between items-center font-monasans font-medium text-base"
+  >
+    <span class="whitespace-nowrap"> {{ name }}</span>
+    <p>
+      <span>{{ currentValue }}</span>
+      <span class="text-project-black-100">/</span>
+      <span class="text-project-black-100">{{ maxlength }}</span>
+    </p>
+  </div>
+
+  @if(type == 'TEXT') {
+  <input
+    class="border border-project-neutral rounded-md p-2 focus:outline-project-blue-100"
+    type="text"
+    [placeholder]="placeholder"
+    [formControl]="formControl"
+  />
+  } @else {
+  <textarea
+    class="border border-project-neutral rounded-md p-2 focus:outline-project-blue-100 resize-none"
+    [placeholder]="placeholder"
+    [formControl]="formControl"
+    rows="5"
+  ></textarea>
+  }
+</div>

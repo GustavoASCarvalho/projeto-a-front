@@ -1,0 +1,12 @@
+<button
+  class="p-6 rounded-[10px] border border-project-neutral max-h-60 h-full cursor-pointer w-full flex flex-col"
+  (click)="redirectToChat()"
+>
+  <div class="flex items-center gap-4 pb-4">
+    <img [src]="icon_url" alt="" class="w-9 h-9 object-cover rounded-full" />
+    <span>{{ name }}</span>
+  </div>
+  <p class="h-auto w-full line-clamp-6 text-left">
+    {{ description }}
+  </p>
+</button>

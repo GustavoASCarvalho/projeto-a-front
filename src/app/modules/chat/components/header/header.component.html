@@ -1,0 +1,39 @@
+<div
+  class="w-full h-[68px] flex flex-row items-center justify-between px-6 md:px-10 lg:px-[100px] border-b border-project-neutral-100"
+>
+  <button (click)="onSideBar()">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 256 256"
+    >
+      <path
+        [ngClass]="isOpen ? 'fill-project-black-200' : 'fill-project-blue-200'"
+        fill="currentColor"
+        d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM40,152H56a8,8,0,0,0,0-16H40V120H56a8,8,0,0,0,0-16H40V88H56a8,8,0,0,0,0-16H40V56H80V200H40Zm176,48H96V56H216V200Z"
+      ></path>
+    </svg>
+  </button>
+  <div class="flex items-center gap-4">
+    <img [src]="icon_url" alt="" class="w-9 h-9 object-cover rounded-full" />
+    <span>{{ title }}</span>
+  </div>
+  <button class="flex items-center gap-[6px]" (click)="onClose()">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 256 256"
+    >
+      <path
+        class="fill-project-black-500"
+        fill="currentColor"
+        d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"
+      ></path>
+    </svg>
+    <p class="font-monasans font-normal text-base text-project-black-500">
+      Close
+    </p>
+  </button>
+</div>

@@ -1,3 +1,4 @@
+import { CategoryService } from './../../../../services/category.service';
 import {
   AfterViewInit,
   Component,
@@ -7,15 +8,19 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
-  template_category,
   TemplateService,
+  template,
 } from '../../../../services/template.service';
 import { FormsModule } from '@angular/forms';
+import { CardComponent } from './components/card/card.component';
+import { CategoryButtonComponent } from './components/category-button/category-button.component';
+import { category } from '../../../../services/category.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-templates',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, CardComponent, CategoryButtonComponent],
   templateUrl: './templates.component.html',
   styleUrl: './templates.component.scss',
 })
@@ -23,99 +28,55 @@ export class TemplatesComponent implements OnInit, AfterViewInit {
   @ViewChild('templateList') templateList: ElementRef<any> | undefined;
 
   isSearchActive = false;
+  isLoading = false;
   searchValue: string | null = null;
 
-  template_categories: Array<template_category & { isAtive: boolean }> = [
+  categories: Array<category & { isAtive: boolean }> = [
     {
-      template_category_id: 0,
+      category_id: 0,
       name: 'All Templates',
       isAtive: true,
     },
   ];
-  active_template_category_id = 0;
+  active_category_id = 0;
 
-  templates: Array<any> = [
-    {
-      template_id: 1,
-      icon_url:
-        'https://icones.pro/wp-content/uploads/2021/02/icone-youtube5.png',
-      name: 'AIDA Framework',
-      description:
-        'Impress potential employers with compelling job application emails that standout from the competition.',
-      template_categories: [0, 1, 2],
-    },
-    {
-      template_id: 1,
-      icon_url:
-        'https://icones.pro/wp-content/uploads/2021/02/icone-youtube5.png',
-      name: 'Aidansoff Matrix',
-      description:
-        'Impress potential employers with compelling job application emails that standout from the competition.',
-      template_categories: [0, 2],
-    },
-    {
-      template_id: 2,
-      icon_url:
-        'https://midia.gruposinos.com.br/_midias/jpg/2018/05/20/icone_geolocalizacao-3440959.jpg',
-      name: 'To-Do List',
-      description:
-        'Impress potential employers with compwith compelling job application emails that standout from the competition.elling job application emails that standout from the competition.',
-      template_categories: [0, 2],
-    },
-    {
-      template_id: 3,
-      icon_url:
-        'https://midia.gruposinos.com.br/_midias/jpg/2018/05/20/icone_geolocalizacao-3440959.jpg',
-      name: 'To-Do List',
-      description:
-        'Impress potential employers with compelling job application emails that standout from with compelling job application emails that standout from the competition.with compelling job application emails that standout from the competition.the competition.',
-      template_categories: [0, 2],
-    },
-    {
-      template_id: 4,
-      icon_url:
-        'https://midia.gruposinos.com.br/_midias/jpg/2018/05/20/icone_geolocalizacao-3440959.jpg',
-      name: 'To-Do List',
-      description:
-        'Impress potential employers with compelwith compelling job application emails that standout from the competition.with compelling job application emails that standout from the competition.with compelling job application emails that standout from the competition.with compelling job application emails that standout from the competition.ling job application emails that standout from the competition.',
-      template_categories: [0, 2],
-    },
-    {
-      template_id: 5,
-      icon_url:
-        'https://midia.gruposinos.com.br/_midias/jpg/2018/05/20/icone_geolocalizacao-3440959.jpg',
-      name: 'To-Do List',
-      description:
-        'Impress potential employers with compelling job application emails that standout from the competition. with compelling job application emails that standout from the competition. with compelling job application emails that standout from the competition.',
-      template_categories: [0, 2],
-    },
-    {
-      template_id: 6,
-      icon_url:
-        'https://midia.gruposinos.com.br/_midias/jpg/2018/05/20/icone_geolocalizacao-3440959.jpg',
-      name: 'To-Do List',
-      description:
-        'Impress potential employers with compelling job application emails that standout from the competition.with compelling job application emails that standout from the competition.with compelling job application emails that standout from the competition.',
-      template_categories: [0, 2],
-    },
-  ];
+  templates: Array<template> = [];
 
-  filteredTemplates: Array<any> = this.templates;
+  filteredTemplates: Array<template> = this.templates;
 
   viewMode: 'grid' | 'list' = 'grid';
 
-  constructor(private templateService: TemplateService) {}
+  constructor(
+    private categoryService: CategoryService,
+    private templateService: TemplateService
+  ) {}
 
   ngOnInit(): void {
-    this.templateService.list().subscribe({
-      next: (res) => {
-        if (res.statusCode === 200) {
-          res.data.map((template) => {
-            this.template_categories.push({ ...template, isAtive: false });
+    const categoryObservable = this.categoryService.list();
+    const templateObservable = this.templateService.list();
+
+    forkJoin([categoryObservable, templateObservable]).subscribe(
+      ([categoryRes, templateRes]) => {
+        if (categoryRes.statusCode === 200) {
+          categoryRes.data.map((category) => {
+            this.categories.push({ ...category, isAtive: false });
           });
         }
+
+        if (templateRes.statusCode === 200) {
+          templateRes.data.map((template) => {
+            this.templates.push(template);
+          });
+          this.applyFilters();
+        }
+
+        this.isLoading = false;
       },
-    });
+      (error) => {
+        console.error(error);
+        this.isLoading = false;
+      }
+    );
   }
 
   ngAfterViewInit(): void {
@@ -134,12 +95,11 @@ export class TemplatesComponent implements OnInit, AfterViewInit {
     }
   }
 
-  selectTemplate(template_category_id: number) {
-    this.template_categories.map((template_category) => {
-      template_category.isAtive =
-        template_category.template_category_id === template_category_id;
+  selectTemplate(category_id: number) {
+    this.categories.map((category) => {
+      category.isAtive = category.category_id === category_id;
     });
-    this.active_template_category_id = template_category_id;
+    this.active_category_id = category_id;
     this.applyFilters();
   }
 
@@ -148,51 +108,59 @@ export class TemplatesComponent implements OnInit, AfterViewInit {
     this.selectTemplate(0);
   }
 
-  get templatesListMode() {
+  get templatesListMode(): Array<{
+    category_id: number;
+    templates: Array<template>;
+  }> {
     const templatesList: Array<{
-      template_category_id: number;
-      templates: Array<any>;
+      category_id: number;
+      templates: Array<template>;
     }> = [];
 
-    this.template_categories.map((template_category) => {
-      if (template_category.template_category_id == 0) return;
+    for (const category of this.categories) {
+      if (category.category_id === 0) continue;
+
       const templates = this.filteredTemplates.filter((template) => {
-        return template.template_categories.includes(
-          template_category.template_category_id
+        return template.categories_on_template.some(
+          (cat) => cat.category_id === category.category_id
         );
       });
+
       if (templates.length > 0) {
         templatesList.push({
-          template_category_id: template_category.template_category_id,
+          category_id: category.category_id,
           templates,
         });
       }
-    });
+    }
+
     return templatesList;
   }
 
-  templateCategoryName(template_category_id: number) {
-    const template_category = this.template_categories.find(
-      (template_category) => {
-        return template_category.template_category_id === template_category_id;
-      }
-    );
-    return template_category ? template_category.name : '';
+  categoryName(category_id: number) {
+    const category = this.categories.find((category) => {
+      return category.category_id === category_id;
+    });
+    return category ? category.name : '';
   }
 
-  applyFilters() {
+  applyFilters(): void {
     this.filteredTemplates = this.templates.filter((template) => {
-      return template.template_categories.includes(
-        this.active_template_category_id
+      return (
+        this.active_category_id === 0 ||
+        template.categories_on_template.some(
+          (cat) => cat.category_id === this.active_category_id
+        )
       );
     });
+
     if (!this.searchValue) return;
+
+    const lowerCaseSearchValue = this.searchValue.toLowerCase();
     this.filteredTemplates = this.filteredTemplates.filter((template) => {
       return (
-        template.name.toLowerCase().includes(this.searchValue!.toLowerCase()) ||
-        template.description
-          .toLowerCase()
-          .includes(this.searchValue!.toLowerCase())
+        template.name.toLowerCase().includes(lowerCaseSearchValue) ||
+        template.description.toLowerCase().includes(lowerCaseSearchValue)
       );
     });
   }

@@ -45,7 +45,7 @@
 }
 
 .active:nth-child(1) ~ #home:before {
-  transform: translateX(-267px);
+  transform: translateX(-269px);
   animation: maxWidthFirst 500ms linear forwards;
   @media (max-width: 767px) {
     transform: translateX(-200%);
