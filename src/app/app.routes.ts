@@ -6,6 +6,7 @@ import { SignupComponent } from './modules/signup/signup.component';
 import { TemplatesComponent } from './modules/home/pages/templates/templates.component';
 import { BComponent } from './modules/home/pages/b/b.component';
 import { ChatComponent } from './modules/chat/chat.component';
+import { HistoricComponent } from './modules/home/pages/historic/historic.component';
 
 export const routes: Routes = [
   {
@@ -15,7 +16,7 @@ export const routes: Routes = [
     title: 'Home',
     children: [
       { path: '', component: TemplatesComponent, title: 'A' },
-      { path: 'history', component: BComponent, title: 'History' },
+      { path: 'history', component: HistoricComponent, title: 'History' },
       { path: 'c', component: BComponent, title: 'C' },
     ],
   },

@@ -13,6 +13,7 @@ module.exports = {
         "project-blue-100": "#4A72FF",
         "project-blue-200": "#1B4DFF",
         "project-blue-300": "#94ABFF",
+        "project-black-10": "#5E718D",
         "project-black-50": "#E9EFF6",
         "project-black-100": "#AAB3C3",
         "project-black-200": "#8897AE",

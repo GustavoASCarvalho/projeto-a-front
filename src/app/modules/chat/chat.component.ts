@@ -69,6 +69,7 @@ export class ChatComponent implements OnInit {
   ];
   sidebarOpen = true;
   isLoading = false;
+  isGenerating = false;
 
   form = this.fb.group({
     chat_gpt_api_key_id: [0, Validators.required],
@@ -177,8 +178,10 @@ export class ChatComponent implements OnInit {
   }
 
   handleSubmit() {
+    console.log('this.form', this.form);
     if (this.form.invalid) return;
     this.isLoading = true;
+    this.isGenerating = true;
     this.conversationService.getResult().subscribe({
       next: (res: any) => {
         console.log('res', res);
@@ -191,10 +194,12 @@ export class ChatComponent implements OnInit {
           this.conversations[this.selectedConversation].messages
         );
         this.isLoading = false;
+        this.isGenerating = false;
         this.scrollScreenToBottom();
       },
       error: (err) => {
         this.isLoading = false;
+        this.isGenerating = false;
         console.error(err);
       },
     });
@@ -252,8 +257,15 @@ export class ChatComponent implements OnInit {
   }
 
   scrollScreenToBottom(): void {
-    const screen = this.screen.nativeElement;
-    screen.scrollTop = screen.scrollHeight;
+    if (!this.screen) {
+      setTimeout(() => {
+        const screen = this.screen.nativeElement;
+        screen.scrollTop = screen.scrollHeight;
+      }, 100);
+    } else {
+      const screen = this.screen.nativeElement;
+      screen.scrollTop = screen.scrollHeight;
+    }
   }
 
   handleMessage() {

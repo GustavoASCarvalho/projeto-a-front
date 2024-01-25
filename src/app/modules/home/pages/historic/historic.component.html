@@ -1,0 +1,156 @@
+<app-modal #clearModal>
+  <div class="flex gap-4 min-w-[500px]">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="28"
+      height="28"
+      viewBox="0 0 256 256"
+    >
+      <path
+        class="fill-project-red-300"
+        fill="currentColor"
+        d="M236.8 188.09L149.35 36.22a24.76 24.76 0 0 0-42.7 0L19.2 188.09a23.51 23.51 0 0 0 0 23.72A24.35 24.35 0 0 0 40.55 224h174.9a24.35 24.35 0 0 0 21.33-12.19a23.51 23.51 0 0 0 .02-23.72Zm-13.87 15.71a8.5 8.5 0 0 1-7.48 4.2H40.55a8.5 8.5 0 0 1-7.48-4.2a7.59 7.59 0 0 1 0-7.72l87.45-151.87a8.75 8.75 0 0 1 15 0l87.45 151.87a7.59 7.59 0 0 1-.04 7.72ZM120 144v-40a8 8 0 0 1 16 0v40a8 8 0 0 1-16 0Zm20 36a12 12 0 1 1-12-12a12 12 0 0 1 12 12Z"
+      />
+    </svg>
+    <div class="flex flex-col gap-3">
+      <span class="font-monasans font-medium text-xl">Clear historics</span>
+      <span class="font-monasans font-normal text-base text-project-black-300"
+        >Are you sure you want to clear all conversations historic?</span
+      >
+    </div>
+  </div>
+  <div class="flex gap-[22px] justify-end mt-6">
+    <button
+      class="px-7 py-2 font-monasans font-medium text-sm rounded border border-project-black-50 text-project-black-400"
+      (click)="clearModal.toggleModal()"
+    >
+      Cancel
+    </button>
+    <button
+      class="px-7 py-2 font-monasans font-medium text-sm rounded border border-project-red-500 bg-project-red-500 text-white"
+      (click)="clearModal.toggleModal()"
+    >
+      Clear
+    </button>
+  </div>
+</app-modal>
+<div class="h-[calc(100vh-68px)] flex">
+  <div
+    class="border-r border-project-neutral-100 overflow-hidden transition-all duration-300 ease-in-out flex-[0_0_30%]"
+  >
+    <div class="flex flex-col py-6 h-full">
+      <div class="flex items-center px-7 pb-6">
+        <span class="whitespace-nowrap font-monasans text-base font-bold"
+          >History</span
+        >
+        <button class="ms-auto" (click)="clearModal.toggleModal()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 256 256"
+          >
+            <path
+              class="fill-project-black-200"
+              fill="currentColor"
+              d="M235.5,216.81c-22.56-11-35.5-34.58-35.5-64.8V134.73a15.94,15.94,0,0,0-10.09-14.87L165,110a8,8,0,0,1-4.48-10.34l21.32-53a28,28,0,0,0-16.1-37,28.14,28.14,0,0,0-35.82,16,.61.61,0,0,0,0,.12L108.9,79a8,8,0,0,1-10.37,4.49L73.11,73.14A15.89,15.89,0,0,0,55.74,76.8C34.68,98.45,24,123.75,24,152a111.45,111.45,0,0,0,31.18,77.53A8,8,0,0,0,61,232H232a8,8,0,0,0,3.5-15.19ZM67.14,88l25.41,10.3a24,24,0,0,0,31.23-13.45l21-53c2.56-6.11,9.47-9.27,15.43-7a12,12,0,0,1,6.88,15.92L145.69,93.76a24,24,0,0,0,13.43,31.14L184,134.73V152c0,.33,0,.66,0,1L55.77,101.71A108.84,108.84,0,0,1,67.14,88Zm48,128a87.53,87.53,0,0,1-24.34-42,8,8,0,0,0-15.49,4,105.16,105.16,0,0,0,18.36,38H64.44A95.54,95.54,0,0,1,40,152a85.9,85.9,0,0,1,7.73-36.29l137.8,55.12c3,18,10.56,33.48,21.89,45.16Z"
+            ></path>
+          </svg>
+        </button>
+      </div>
+      <div
+        class="flex flex-col gap-1 my-8 overflow-y-auto overflow-x-hidden scrollbar scroll-smooth"
+      >
+        @for(c of conversations; track c; let idx = $index) {
+        <button
+          class="px-7 py-3 flex flex-col w-full"
+          [ngClass]="
+            idx == selectedConversation ? 'bg-project-black-50' : 'bg-white'
+          "
+          (click)="selectedConversation = idx"
+        >
+          <span
+            class="font-monasans font-semibold text-xl text-project-black-500 whitespace-nowrap overflow-hidden text-ellipsis w-[inherit] text-start"
+            >{{ c.messages[0].prompt }}</span
+          >
+          <div
+            class="flex gap-4 font-monasans font-normal text-base text-project-black-10 w-full"
+          >
+            <span class="w-auto">{{
+              c.messages[0].prompt_time | date : "M/d/y"
+            }}</span>
+            <span
+              class="whitespace-nowrap overflow-hidden text-ellipsis w-auto"
+              >{{ c.messages[0].completion }}</span
+            >
+          </div>
+        </button>
+        }
+      </div>
+    </div>
+  </div>
+  @if(selectedConversation == null) {
+  <div class="flex items-center justify-center flex-[1]">
+    <div class="flex flex-col gap-4 items-center">
+      <img src="./assets/img/file.png" alt="" class="w-24 h-28" />
+      <span
+        class="font-monasans font-normal text-base text-project-black-100 text-center"
+        >Select a conversation to
+      </span>
+    </div>
+  </div>
+  } @else {
+  <div
+    class="flex flex-col py-6 transition-all delay-300 duration-300 ease-in-out flex-[1]"
+  >
+    <div
+      #screen
+      class="flex flex-col px-7 mb-7 overflow-y-auto overflow-x-hidden scrollbar me-4 scroll-smooth"
+    >
+      @for(message of conversations[selectedConversation].messages; track
+      message; let idx = $index) { @if(message.prompt) {
+      <div class="relative pt-7">
+        <markdown
+          class="prose font-monasans w-full grid max-w-full"
+          [data]="message.prompt"
+        >
+        </markdown>
+        <span
+          class="absolute top-0 right-7 font-monasans font-normal text-lg text-project-blue-200"
+          >{{ message.prompt_time | date : "h:mm" }}</span
+        >
+      </div>
+      @if(message.prompt.length > 300) {
+      <app-copy
+        class="flex justify-end pt-8"
+        [text]="message.prompt"
+      ></app-copy>
+      }
+      <div class="w-full h-[1px] ml-2 my-8 bg-[#AFBACA]"></div>
+      } @if(message.completion) {
+
+      <div class="relative pt-7">
+        <markdown
+          class="prose font-monasans w-full grid max-w-full"
+          [data]="message.completion"
+        >
+        </markdown>
+        <span
+          class="absolute top-0 right-7 font-monasans font-normal text-lg text-project-blue-200"
+          >{{ message.completion_time | date : "h:mm" }}</span
+        >
+      </div>
+      @if(message.completion.length > 300) {
+      <app-copy
+        class="flex justify-end pt-8"
+        [text]="message.completion"
+      ></app-copy>
+      }
+
+      <div class="w-full h-[1px] ml-2 my-8 bg-[#AFBACA]"></div>
+      } }
+    </div>
+  </div>
+
+  }
+</div>
