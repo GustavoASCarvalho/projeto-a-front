@@ -9,20 +9,11 @@
       [routerLink]="'/home'"
       [routerLinkActiveOptions]="{ exact: true }"
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 256 256"
-      >
-        <path
-          class="fill-project-black-200"
-          [routerLinkActive]="['fill-project-blue-100']"
-          [routerLinkActiveOptions]="{ exact: true }"
-          fill="currentColor"
-          d="M80 40a40 40 0 1 0 40 40a40 40 0 0 0-40-40m0 64a24 24 0 1 1 24-24a24 24 0 0 1-24 24m96 16a40 40 0 1 0-40-40a40 40 0 0 0 40 40m0-64a24 24 0 1 1-24 24a24 24 0 0 1 24-24m-96 80a40 40 0 1 0 40 40a40 40 0 0 0-40-40m0 64a24 24 0 1 1 24-24a24 24 0 0 1-24 24m96-64a40 40 0 1 0 40 40a40 40 0 0 0-40-40m0 64a24 24 0 1 1 24-24a24 24 0 0 1-24 24"
-        />
-      </svg>
+      <i
+        class="ph ph-list-dashes text-project-black-200 text-2xl"
+        [routerLinkActive]="['text-project-blue-100']"
+        [routerLinkActiveOptions]="{ exact: true }"
+      ></i>
       <span
         class="max-w-0 overflow-hidden transition-all duration-500 ease-linear hidden md:block"
         [routerLinkActive]="['max-w-[100px]']"
@@ -38,20 +29,11 @@
       [routerLink]="'/home/c'"
       [routerLinkActiveOptions]="{ exact: true }"
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 256 256"
-      >
-        <path
-          class="fill-project-black-200"
-          [routerLinkActive]="['fill-project-blue-100']"
-          [routerLinkActiveOptions]="{ exact: true }"
-          fill="currentColor"
-          d="M216 80h-32V48a16 16 0 0 0-16-16H40a16 16 0 0 0-16 16v128a8 8 0 0 0 13 6.22L72 154v30a16 16 0 0 0 16 16h93.59L219 230.22a8 8 0 0 0 5 1.78a8 8 0 0 0 8-8V96a16 16 0 0 0-16-16M66.55 137.78L40 159.25V48h128v88H71.58a8 8 0 0 0-5.03 1.78ZM216 207.25l-26.55-21.47a8 8 0 0 0-5-1.78H88v-32h80a16 16 0 0 0 16-16V96h32Z"
-        />
-      </svg>
+      <i
+        class="ph ph-chats text-project-black-200 text-2xl"
+        [routerLinkActive]="['text-project-blue-100']"
+        [routerLinkActiveOptions]="{ exact: true }"
+      ></i>
       <span
         class="max-w-0 overflow-hidden transition-all duration-500 ease-linear hidden md:block"
         [routerLinkActive]="['max-w-[100px]']"
@@ -69,20 +51,11 @@
       [routerLink]="'/home/history'"
       [routerLinkActiveOptions]="{ exact: true }"
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 256 256"
-      >
-        <path
-          class="fill-project-black-200"
-          [routerLinkActive]="['fill-project-blue-100']"
-          [routerLinkActiveOptions]="{ exact: true }"
-          fill="currentColor"
-          d="M168 152a8 8 0 0 1-8 8H96a8 8 0 0 1 0-16h64a8 8 0 0 1 8 8m-8-40H96a8 8 0 0 0 0 16h64a8 8 0 0 0 0-16m56-64v168a16 16 0 0 1-16 16H56a16 16 0 0 1-16-16V48a16 16 0 0 1 16-16h36.26a47.92 47.92 0 0 1 71.48 0H200a16 16 0 0 1 16 16M96 64h64a32 32 0 0 0-64 0m104-16h-26.75A47.93 47.93 0 0 1 176 64v8a8 8 0 0 1-8 8H88a8 8 0 0 1-8-8v-8a47.93 47.93 0 0 1 2.75-16H56v168h144Z"
-        />
-      </svg>
+      <i
+        class="ph ph-clipboard-text text-project-black-200 text-2xl"
+        [routerLinkActive]="['text-project-blue-100']"
+        [routerLinkActiveOptions]="{ exact: true }"
+      ></i>
       <span
         class="max-w-0 overflow-hidden transition-all duration-500 ease-linear hidden md:block"
         [routerLinkActive]="['max-w-[100px]']"
@@ -92,16 +65,74 @@
       </span>
     </button>
   </nav>
-  <div class="flex flex-row items-center">
+  <div
+    #openToolTip
+    class="flex flex-row items-center cursor-pointer"
+    (click)="toggleToolTip()"
+  >
     <span
       class="font-monasans font-medium text-[15px] pr-[6px] hidden md:block"
       >{{ name }}</span
     >
-    <img
-      src="./assets/icons/chevron_down.svg"
-      alt=""
-      class="pr-3 hidden md:block"
-    />
+    <i class="ph-bold ph-caret-down pr-3 hidden md:block text-[15px]"></i>
     <img class="w-[40px] h-[40px] rounded-full" src="{{ photoUrl }}" alt="" />
   </div>
+  @if(toolTipOpen) {
+  <div
+    #toolTip
+    class="absolute top-[68px] right-[1.5rem] md:right-[2.5rem] lg:right-[100px] w-auto min-w-[250px] bg-white shadow-lg rounded-md border border-project-neutral-100 z-20 overflow-hidden"
+  >
+    <div class="flex flex-col">
+      <div class="flex gap-2 items-center p-4 border-b border-[#E8EDFF]">
+        <img
+          class="w-[32px] h-[32px] rounded-full"
+          src="{{ photoUrl }}"
+          alt=""
+        />
+        <div class="flex flex-col">
+          <span
+            class="font-monasans font-medium text-sm text-project-black-500"
+            >{{ name }}</span
+          >
+          <span class="font-monasans font-normal text-xs text-[#798397]"
+            >email&#64;gmail.com</span
+          >
+        </div>
+      </div>
+      <div class="flex flex-col border-b border-[#E8EDFF]">
+        <div
+          class="flex gap-2 items-center p-4 cursor-pointer hover:bg-slate-200 transition-all duration-300"
+        >
+          <i class="ph ph-plus text-xl"></i>
+          <span class="font-monasans text-[#444D61] text-sm">New Template</span>
+        </div>
+        <div
+          class="flex gap-2 items-center p-4 cursor-pointer hover:bg-slate-200 transition-all duration-300"
+        >
+          <i class="ph ph-plus text-xl"></i>
+          <span class="font-monasans text-[#444D61] text-sm">New Template</span>
+        </div>
+        <div
+          class="flex gap-2 items-center p-4 cursor-pointer hover:bg-slate-200 transition-all duration-300"
+        >
+          <i class="ph ph-plus text-xl"></i>
+          <span class="font-monasans text-[#444D61] text-sm">New Template</span>
+        </div>
+        <div
+          class="flex gap-2 items-center p-4 cursor-pointer hover:bg-slate-200 transition-all duration-300"
+        >
+          <i class="ph ph-plus text-xl"></i>
+          <span class="font-monasans text-[#444D61] text-sm">New Template</span>
+        </div>
+      </div>
+      <div
+        class="flex p-4 gap-2 cursor-pointer hover:bg-red-500 transition-all duration-300"
+        (click)="logout()"
+      >
+        <i class="ph ph-sign-out text-xl"></i>
+        <span class="font-monasans text-sm">Sign out</span>
+      </div>
+    </div>
+  </div>
+  }
 </div>

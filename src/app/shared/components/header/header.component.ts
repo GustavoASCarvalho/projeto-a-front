@@ -1,7 +1,14 @@
-import { UserService } from '../../../services/user.service';
-import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-header',
@@ -10,11 +17,20 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, AfterViewInit {
+  @ViewChild('toolTip', { static: false }) toolTip: ElementRef | undefined;
+  @ViewChild('openToolTip', { static: false }) openToolTip:
+    | ElementRef
+    | undefined;
+
   name: string = '';
   photoUrl: string = '';
+  toolTipOpen: boolean = false;
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.userService.get().subscribe({
@@ -27,5 +43,26 @@ export class HeaderComponent implements OnInit {
         }
       },
     });
+  }
+
+  ngAfterViewInit(): void {
+    document.addEventListener('click', (e) => {
+      if (this.toolTipOpen && this.toolTip && this.openToolTip) {
+        if (
+          !this.toolTip.nativeElement.contains(e.target) &&
+          !this.openToolTip.nativeElement.contains(e.target)
+        ) {
+          this.toolTipOpen = false;
+        }
+      }
+    });
+  }
+
+  toggleToolTip() {
+    this.toolTipOpen = !this.toolTipOpen;
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }
