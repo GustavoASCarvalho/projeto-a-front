@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, Input } from '@angular/core';
 import {
   ControlValueAccessor,
   FormControl,
@@ -23,7 +23,7 @@ import {
 })
 export class InputComponent implements ControlValueAccessor {
   @Input() name: string = '';
-  @Input() type: 'TEXT' | 'STRING' | null = null;
+  @Input() type: 'TEXT' | 'STRING' = 'TEXT';
   @Input() placeholder: string = '';
   @Input() maxlength: number = 100;
 

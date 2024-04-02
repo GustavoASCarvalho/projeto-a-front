@@ -1,11 +1,5 @@
-import { ConversationService } from './../../services/conversation.service';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
-import { TemplateService, template } from '../../services/template.service';
-import { HeaderComponent } from './components/header/header.component';
-import { MenuComponent } from './components/menu/menu.component';
-import { InputComponent } from './components/input/input.component';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -13,8 +7,14 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ModalComponent } from '../../shared/components/modal/modal.component';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MarkdownModule, provideMarkdown } from 'ngx-markdown';
+import { TemplateService, template } from '../../services/template.service';
+import { InputComponent } from '../../shared/components/input/input.component';
+import { ModalComponent } from '../../shared/components/modal/modal.component';
+import { ConversationService } from './../../services/conversation.service';
+import { HeaderComponent } from './components/header/header.component';
+import { MenuComponent } from './components/menu/menu.component';
 
 @Component({
   selector: 'app-chat',

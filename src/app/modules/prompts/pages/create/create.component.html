@@ -1,0 +1,30 @@
+<app-header />
+<div class="flex flex-col items-center mt-20 w-fit mx-auto gap-8">
+  <div class="flex items-center gap-4">
+    <div
+      class="rounded-[50%] h-[50px] w-[50px] hover:opacity-70 transition-all duration-300 ease-in-out cursor-pointer overflow-auto"
+    >
+      <img
+        src="https://i.pinimg.com/474x/07/71/97/077197098050ba70f0c256fd6b7c2808.jpg"
+        class="object-contain"
+        alt=""
+      />
+    </div>
+
+    <input
+      class="border-b border-project-neutral pe-2 focus:outline-none text-xl font-bold text-slate-900 placeholder:text-slate-900 w-[200px] md:w-[300px]"
+      type="text"
+      value="My Prompt Name"
+    />
+  </div>
+  <div class="flex gap-4 w-[266px] md:w-[366px] flex-wrap justify-center">
+    @for(categorie of categories; track categorie.id;) {
+    <span
+      class="h-fit p-2 px-3 bg-slate-100 border hover:bg-slate-300 border-slate-300 text-xs rounded-3xl cursor-pointer transition-all duration-300 ease-in-out"
+      [ngClass]="categorie.selected ? 'bg-slate-300' : ''"
+      (click)="categorie.selected = !categorie.selected"
+      >{{ categorie.name }}</span
+    >
+    }
+  </div>
+</div>

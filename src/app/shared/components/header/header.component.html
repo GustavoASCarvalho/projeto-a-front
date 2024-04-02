@@ -1,7 +1,12 @@
 <div
   class="w-full h-[68px] flex flex-row items-center justify-between px-6 md:px-10 lg:px-[100px] border-b border-project-neutral-100"
 >
-  <img src="./assets/img/logo.png" alt="" class="hidden md:block" />
+  <img
+    [routerLink]="'/home'"
+    src="./assets/img/logo.png"
+    alt=""
+    class="hidden md:block cursor-pointer"
+  />
   <nav class="flex flex-row" #nav>
     <button
       class="flex flex-row px-6 md:px-8 py-2 gap-2 font-monasans text-base font-medium rounded-full relative w-100 text-project-black-200"
@@ -102,21 +107,10 @@
       <div class="flex flex-col border-b border-[#E8EDFF]">
         <div
           class="flex gap-2 items-center p-4 cursor-pointer hover:bg-slate-200 transition-all duration-300"
+          [routerLink]="'/prompts'"
         >
-          <i class="ph ph-plus text-xl"></i>
-          <span class="font-monasans text-[#444D61] text-sm">New Template</span>
-        </div>
-        <div
-          class="flex gap-2 items-center p-4 cursor-pointer hover:bg-slate-200 transition-all duration-300"
-        >
-          <i class="ph ph-plus text-xl"></i>
-          <span class="font-monasans text-[#444D61] text-sm">New Template</span>
-        </div>
-        <div
-          class="flex gap-2 items-center p-4 cursor-pointer hover:bg-slate-200 transition-all duration-300"
-        >
-          <i class="ph ph-plus text-xl"></i>
-          <span class="font-monasans text-[#444D61] text-sm">New Template</span>
+          <i class="ph ph-user-list text-xl"></i>
+          <span class="font-monasans text-[#444D61] text-sm">Your Prompts</span>
         </div>
         <div
           class="flex gap-2 items-center p-4 cursor-pointer hover:bg-slate-200 transition-all duration-300"

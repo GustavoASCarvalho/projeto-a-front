@@ -1,0 +1,30 @@
+<div
+  class="w-full h-[68px] flex flex-row items-center justify-between px-6 md:px-10 lg:px-[100px] border-b border-project-neutral-100"
+>
+  <img
+    [routerLink]="'/home'"
+    src="./assets/img/logo.png"
+    alt=""
+    class="hidden md:block cursor-pointer"
+  />
+  <div class="flex items-center text-lg font-monasans font-semibold">
+    <span>Prompts</span>
+  </div>
+  <button class="flex items-center gap-[6px]" (click)="onClose()">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 256 256"
+    >
+      <path
+        class="fill-project-black-500"
+        fill="currentColor"
+        d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"
+      ></path>
+    </svg>
+    <p class="font-monasans font-normal text-base text-project-black-500">
+      Close
+    </p>
+  </button>
+</div>

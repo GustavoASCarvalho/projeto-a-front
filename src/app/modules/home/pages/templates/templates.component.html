@@ -11,7 +11,7 @@
         @for(c of categories; track c.category_id){
         <button
           (click)="selectTemplate(c.category_id)"
-          class="px-4 py-3 font-monasans font-medium text-sm text-project-black-500 whitespace-nowrap rounded-full border border-project-black-50 cursor-pointer transition-colors duration-200 ease-in"
+          class="px-8 py-3 font-monasans font-medium text-sm text-project-black-500 whitespace-nowrap rounded-full border border-project-black-50 cursor-pointer transition-colors duration-200 ease-in"
           [ngClass]="c.isAtive ? 'bg-project-black-50' : ''"
         >
           {{ c.name }}

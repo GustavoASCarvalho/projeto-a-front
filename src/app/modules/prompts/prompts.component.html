@@ -1,0 +1,18 @@
+<app-header />
+<div class="w-full px-6 md:px-10 lg:px-[100px]">
+  @for(prompt of prompts; track prompt.id;) {
+  <div class="flex flex-col py-8 border-b border-slate-200 max-w-[300px] gap-2">
+    <div class="flex gap-4 text-slate-700 font-bold text-xl items-center">
+      <span>{{ prompt.name }}</span>
+      <span
+        class="rounded-full bg-slate-100 border border-slate-400 px-2 font-semibold text-xs flex items-center justify-center text-slate-600 h-fit"
+      >
+        {{ prompt.visibility == "PUBLIC" ? "Public" : "Private" }}
+      </span>
+    </div>
+    <div class="text-xs font-extralight text-slate-600">
+      {{ prompt.description }}
+    </div>
+  </div>
+  }
+</div>

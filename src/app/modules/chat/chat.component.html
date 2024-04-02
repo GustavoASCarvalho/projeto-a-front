@@ -63,7 +63,7 @@
         >
           @for (key of chat_gpt_api_keys; track key.chatgpt_api_key_id; let idx
           = $index) {
-          <option [value]="key.chatgpt_api_key_id" selected class="">
+          <option [value]="key.chatgpt_api_key_id" selected>
             {{ key.name }}
           </option>
           }
