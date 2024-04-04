@@ -14,17 +14,62 @@
     <input
       class="border-b border-project-neutral pe-2 focus:outline-none text-xl font-bold text-slate-900 placeholder:text-slate-900 w-[200px] md:w-[300px]"
       type="text"
-      value="My Prompt Name"
+      placeholder="My Prompt Name"
     />
   </div>
+  <textarea
+    class="overflow-y-hidden rounded-lg p-2 border border-slate-300 focus:outline-none w-[266px] md:w-[366px] h-[100px] text-slate-900 placeholder-slate-900 resize-none text-sm"
+    placeholder="Small description about the prompt propose"
+  ></textarea>
   <div class="flex gap-4 w-[266px] md:w-[366px] flex-wrap justify-center">
-    @for(categorie of categories; track categorie.id;) {
-    <span
-      class="h-fit p-2 px-3 bg-slate-100 border hover:bg-slate-300 border-slate-300 text-xs rounded-3xl cursor-pointer transition-all duration-300 ease-in-out"
-      [ngClass]="categorie.selected ? 'bg-slate-300' : ''"
-      (click)="categorie.selected = !categorie.selected"
-      >{{ categorie.name }}</span
-    >
+    @for (categorie of categories; track categorie.id) {
+      <span
+        class="h-fit p-2 px-3 bg-slate-100 border hover:bg-slate-300 border-slate-300 text-xs rounded-3xl cursor-pointer transition-all duration-300 ease-in-out"
+        [ngClass]="categorie.selected ? 'bg-slate-300' : ''"
+        (click)="categorie.selected = !categorie.selected"
+        >{{ categorie.name }}</span
+      >
     }
+  </div>
+  <div class="flex flex-col gap-3 w-full">
+    <div class="flex gap-2">
+      <input type="radio" name="visibility" checked />
+      <div class="flex items-center gap-1">
+        <i class="ph ph-lock-simple"></i>
+        <span class="text-slate-900 font-bold">Private</span>
+      </div>
+    </div>
+    <div class="flex gap-2">
+      <input type="radio" name="visibility" />
+      <div class="flex items-center gap-1">
+        <i class="ph ph-lock-simple-open"></i>
+        <span class="text-slate-900 font-bold">Public</span>
+      </div>
+    </div>
+  </div>
+  <div class="flex flex-col gap-3">
+    <div class="text-center">
+      <h2 class="font-bold">Write your prompt</h2>
+      <span class="text-xs"
+        >highlight your variables with
+        <span class="font-bold">{{"{{variable_name}}"}}</span>
+      </span>
+    </div>
+    <div #container class="w-[266px] md:w-[366px] h-[100px] block m">
+      <div
+        #backdrop
+        class="w-[266px] md:w-[366px] h-[100px] absolute z-10 rounded-lg border border-slate-300 bg-white overflow-x-hidden overflow-y-hidden pointer-events-none transition-all duration-1000"
+      >
+        <div
+          #highlights
+          class="w-[266px] md:w-[366px] h-[100px] p-2 text-sm"
+        ></div>
+      </div>
+      <textarea
+        #textarea
+        class="overflow-x-hidden overflow-y-hidden rounded-lg p-2 border border-slate-300 focus:outline-none w-[266px] md:w-[366px] h-[100px] text-slate-900 placeholder-slate-900 resize-none text-sm block absolute z-20 bg-transparent"
+        placeholder="Write your prompt here..."
+      ></textarea>
+    </div>
   </div>
 </div>

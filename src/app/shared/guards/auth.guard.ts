@@ -24,6 +24,6 @@ export const authGuard: CanActivateFn = (route, state) => {
       return new Observable<boolean>((observer) => {
         observer.next(false);
       });
-    })
+    }),
   );
 };

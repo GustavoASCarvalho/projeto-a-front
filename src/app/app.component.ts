@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
   ) {
     AppComponent.isBrowser.next(isPlatformBrowser(this.platformId));
   }

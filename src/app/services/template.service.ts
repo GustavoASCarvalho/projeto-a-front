@@ -38,9 +38,9 @@ export type template = {
           tip: string;
           type: 'TEXT' | 'STRING';
           variable_id: number;
-        }
+        },
       ];
-    }
+    },
   ];
   categories_on_template: [
     {
@@ -50,7 +50,7 @@ export type template = {
         category_id: number;
         name: string;
       };
-    }
+    },
   ];
 };
 
@@ -68,7 +68,7 @@ export class TemplateService {
 
   getBySlug(slug: string) {
     return this.http.get(
-      `${environment.apiUrl}/template/${slug}`
+      `${environment.apiUrl}/template/${slug}`,
     ) as Observable<ApiReponse<template>>;
   }
 }

@@ -18,7 +18,10 @@ export type registerResponse = {
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+  ) {}
 
   login(email: string, password: string) {
     return this.http.post(`${environment.apiUrl}/auth/authenticate`, {

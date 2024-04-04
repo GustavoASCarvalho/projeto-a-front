@@ -29,7 +29,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
   constructor(
     private userService: UserService,
-    private authService: AuthService
+    private authService: AuthService,
   ) {}
 
   ngOnInit(): void {

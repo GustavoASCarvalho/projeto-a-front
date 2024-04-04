@@ -61,22 +61,28 @@
           formControlName="chat_gpt_api_key_id"
           class="border-r-8 border-transparent outline outline-1 outline-project-neutral rounded-md p-2 focus:outline-project-blue-100 cursor-pointer mt-8"
         >
-          @for (key of chat_gpt_api_keys; track key.chatgpt_api_key_id; let idx
-          = $index) {
-          <option [value]="key.chatgpt_api_key_id" selected>
-            {{ key.name }}
-          </option>
+          @for (
+            key of chat_gpt_api_keys;
+            track key.chatgpt_api_key_id;
+            let idx = $index
+          ) {
+            <option [value]="key.chatgpt_api_key_id" selected>
+              {{ key.name }}
+            </option>
           }
         </select>
         <div formArrayName="variables" class="flex flex-col gap-6 mb-8">
-          @for(variable of variables.controls; track variable; let idx = $index
-          ){
-          <app-input
-            [formControl]="getVariableValue(idx)"
-            [name]="variableByIndex(idx).name"
-            [placeholder]="variableByIndex(idx).placeholder"
-            [type]="variableByIndex(idx).type"
-          ></app-input>
+          @for (
+            variable of variables.controls;
+            track variable;
+            let idx = $index
+          ) {
+            <app-input
+              [formControl]="getVariableValue(idx)"
+              [name]="variableByIndex(idx).name"
+              [placeholder]="variableByIndex(idx).placeholder"
+              [type]="variableByIndex(idx).type"
+            ></app-input>
           }
         </div>
       </form>
@@ -90,23 +96,23 @@
               : 'border-project-blue-200 bg-project-blue-200 justify-center px-8'
           "
         >
-          @if(isLoading){
-          <svg
-            aria-hidden="true"
-            class="inline w-6 h-6 text-white animate-spin icon-gradient"
-            viewBox="0 0 100 101"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-              fill="currentColor"
-            />
-            <path
-              d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-              fill="currentFill"
-            />
-          </svg>
+          @if (isLoading) {
+            <svg
+              aria-hidden="true"
+              class="inline w-6 h-6 text-white animate-spin icon-gradient"
+              viewBox="0 0 100 101"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                fill="currentColor"
+              />
+              <path
+                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                fill="currentFill"
+              />
+            </svg>
           }
           <div class="flex gap-[10px]">
             <svg
@@ -126,131 +132,43 @@
               {{ isGenerating ? "Writing" : "Re-Generate" }}
             </span>
           </div>
-          @if(isLoading) {
-          <button (click)="cancelSubmit()">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 256 256"
-            >
-              <path
-                class="fill-project-red-600"
-                fill="currentColor"
-                d="M216 55.27v145.46A15.29 15.29 0 0 1 200.73 216H55.27A15.29 15.29 0 0 1 40 200.73V55.27A15.29 15.29 0 0 1 55.27 40h145.46A15.29 15.29 0 0 1 216 55.27Z"
-              />
-            </svg>
-          </button>
+          @if (isLoading) {
+            <button (click)="cancelSubmit()">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 256 256"
+              >
+                <path
+                  class="fill-project-red-600"
+                  fill="currentColor"
+                  d="M216 55.27v145.46A15.29 15.29 0 0 1 200.73 216H55.27A15.29 15.29 0 0 1 40 200.73V55.27A15.29 15.29 0 0 1 55.27 40h145.46A15.29 15.29 0 0 1 216 55.27Z"
+                />
+              </svg>
+            </button>
           }
         </button>
       </div>
     </div>
   </div>
-  @if(!conversations || conversations.length === 0 || selectedConversation ==
-  null) {
-  <div class="flex items-center justify-center flex-[1]">
-    <div class="flex flex-col gap-4 items-center">
-      <img src="./assets/img/file.png" alt="" class="w-24 h-28" />
-      <span
-        class="font-monasans font-normal text-base text-project-black-100 text-center"
-        >Your copies created by artificial intelligencewill appear here.</span
-      >
+  @if (
+    !conversations || conversations.length === 0 || selectedConversation == null
+  ) {
+    <div class="flex items-center justify-center flex-[1]">
+      <div class="flex flex-col gap-4 items-center">
+        <img src="./assets/img/file.png" alt="" class="w-24 h-28" />
+        <span
+          class="font-monasans font-normal text-base text-project-black-100 text-center"
+          >Your copies created by artificial intelligencewill appear here.</span
+        >
+      </div>
     </div>
-  </div>
   } @else {
-  <div
-    class="flex flex-col py-6 transition-all delay-300 duration-300 ease-in-out flex-[1]"
-  >
-    <div class="flex items-center gap-3 px-7 pb-6 me-4">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 256 256"
-      >
-        <path
-          class="fill-project-blue-200"
-          fill="currentColor"
-          d="m197.58 129.06l-51.61-19l-19-51.65a15.92 15.92 0 0 0-29.88 0L78.07 110l-51.65 19a15.92 15.92 0 0 0 0 29.88L78 178l19 51.62a15.92 15.92 0 0 0 29.88 0l19-51.61l51.65-19a15.92 15.92 0 0 0 0-29.88ZM140.39 163a15.87 15.87 0 0 0-9.43 9.43l-19 51.46L93 172.39a15.87 15.87 0 0 0-9.39-9.39l-51.46-19l51.46-19a15.87 15.87 0 0 0 9.39-9.39l19-51.46l19 51.46a15.87 15.87 0 0 0 9.43 9.43l51.46 19ZM144 40a8 8 0 0 1 8-8h16V16a8 8 0 0 1 16 0v16h16a8 8 0 0 1 0 16h-16v16a8 8 0 0 1-16 0V48h-16a8 8 0 0 1-8-8Zm104 48a8 8 0 0 1-8 8h-8v8a8 8 0 0 1-16 0v-8h-8a8 8 0 0 1 0-16h8v-8a8 8 0 0 1 16 0v8h8a8 8 0 0 1 8 8Z"
-        />
-      </svg>
-      <span class="font-monasans font-bold text-base">Result</span>
-      <div class="ms-auto gap-2 flex flex-row">
-        <button (click)="selectConversation(selectedConversation - 1)">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="18"
-            height="18"
-            viewBox="0 0 256 256"
-          >
-            <path
-              fill="currentColor"
-              d="M165.66 202.34a8 8 0 0 1-11.32 11.32l-80-80a8 8 0 0 1 0-11.32l80-80a8 8 0 0 1 11.32 11.32L91.31 128Z"
-            />
-          </svg>
-        </button>
-        <span
-          class="ms-auto font-monasans font-normal text-sm min-w-[34px] text-center"
-          >{{ selectedConversation + 1 }}/{{ conversations.length }}</span
-        >
-        <button (click)="selectConversation(selectedConversation + 1)">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="18"
-            height="18"
-            viewBox="0 0 256 256"
-          >
-            <path
-              fill="currentColor"
-              d="m181.66 133.66l-80 80a8 8 0 0 1-11.32-11.32L164.69 128L90.34 53.66a8 8 0 0 1 11.32-11.32l80 80a8 8 0 0 1 0 11.32"
-            />
-          </svg>
-        </button>
-      </div>
-    </div>
     <div
-      #screen
-      class="flex flex-col px-7 mb-7 overflow-y-auto overflow-x-hidden scrollbar me-4 scroll-smooth"
+      class="flex flex-col py-6 transition-all delay-300 duration-300 ease-in-out flex-[1]"
     >
-      @for(message of conversations[selectedConversation].messages; track
-      message; let idx = $index) { @if(message.prompt) {
-      <div class="relative pt-7">
-        <markdown
-          class="prose font-monasans w-full grid max-w-full"
-          [data]="message.prompt"
-        >
-        </markdown>
-        <span
-          class="absolute top-0 right-7 font-monasans font-normal text-lg text-project-blue-200"
-          >{{ message.prompt_time | date : "h:mm" }}</span
-        >
-      </div>
-      } @if(message.completion) {
-
-      <div class="relative pt-7">
-        <markdown
-          class="prose font-monasans w-full grid max-w-full"
-          [data]="message.completion"
-        >
-        </markdown>
-        <span
-          class="absolute top-0 right-7 font-monasans font-normal text-lg text-project-blue-200"
-          >{{ message.completion_time | date : "h:mm" }}</span
-        >
-      </div>
-      } }
-    </div>
-    <form [formGroup]="messageForm" class="mt-auto px-7 relative">
-      <textarea
-        #textarea
-        [formControl]="messageForm.controls.input"
-        tabindex="0"
-        rows="1"
-        placeholder="Message..."
-        (input)="onInput($event)"
-        class="m-0 w-full border border-project-neutral rounded-md p-2 pr-9 focus:outline-project-blue-100 input-icon resize-none scrollbar max-h-52 block"
-      ></textarea>
-      <button class="absolute bottom-2 right-10" (click)="handleMessage()">
+      <div class="flex items-center gap-3 px-7 pb-6 me-4">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -258,19 +176,112 @@
           viewBox="0 0 256 256"
         >
           <path
-            [ngClass]="
-              messageForm.controls.input.value
-                ? 'fill-project-blue-200'
-                : 'fill-project-neutral'
-            "
+            class="fill-project-blue-200"
             fill="currentColor"
-            d="m223.87 114l-168-95.89a16 16 0 0 0-22.94 19.21l31 90.47a.42.42 0 0 0 0 .1a.3.3 0 0 0 0 .1l-31 90.67A16 16 0 0 0 48 240a16.14 16.14 0 0 0 7.92-2.1l167.91-96.05a16 16 0 0 0 .05-27.89ZM48 224v-.09L78.14 136H136a8 8 0 0 0 0-16H78.22L48.06 32.12L48 32l168 95.83Z"
+            d="m197.58 129.06l-51.61-19l-19-51.65a15.92 15.92 0 0 0-29.88 0L78.07 110l-51.65 19a15.92 15.92 0 0 0 0 29.88L78 178l19 51.62a15.92 15.92 0 0 0 29.88 0l19-51.61l51.65-19a15.92 15.92 0 0 0 0-29.88ZM140.39 163a15.87 15.87 0 0 0-9.43 9.43l-19 51.46L93 172.39a15.87 15.87 0 0 0-9.39-9.39l-51.46-19l51.46-19a15.87 15.87 0 0 0 9.39-9.39l19-51.46l19 51.46a15.87 15.87 0 0 0 9.43 9.43l51.46 19ZM144 40a8 8 0 0 1 8-8h16V16a8 8 0 0 1 16 0v16h16a8 8 0 0 1 0 16h-16v16a8 8 0 0 1-16 0V48h-16a8 8 0 0 1-8-8Zm104 48a8 8 0 0 1-8 8h-8v8a8 8 0 0 1-16 0v-8h-8a8 8 0 0 1 0-16h8v-8a8 8 0 0 1 16 0v8h8a8 8 0 0 1 8 8Z"
           />
         </svg>
-      </button>
-    </form>
-  </div>
-
+        <span class="font-monasans font-bold text-base">Result</span>
+        <div class="ms-auto gap-2 flex flex-row">
+          <button (click)="selectConversation(selectedConversation - 1)">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 256 256"
+            >
+              <path
+                fill="currentColor"
+                d="M165.66 202.34a8 8 0 0 1-11.32 11.32l-80-80a8 8 0 0 1 0-11.32l80-80a8 8 0 0 1 11.32 11.32L91.31 128Z"
+              />
+            </svg>
+          </button>
+          <span
+            class="ms-auto font-monasans font-normal text-sm min-w-[34px] text-center"
+            >{{ selectedConversation + 1 }}/{{ conversations.length }}</span
+          >
+          <button (click)="selectConversation(selectedConversation + 1)">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 256 256"
+            >
+              <path
+                fill="currentColor"
+                d="m181.66 133.66l-80 80a8 8 0 0 1-11.32-11.32L164.69 128L90.34 53.66a8 8 0 0 1 11.32-11.32l80 80a8 8 0 0 1 0 11.32"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div
+        #screen
+        class="flex flex-col px-7 mb-7 overflow-y-auto overflow-x-hidden scrollbar me-4 scroll-smooth"
+      >
+        @for (
+          message of conversations[selectedConversation].messages;
+          track message;
+          let idx = $index
+        ) {
+          @if (message.prompt) {
+            <div class="relative pt-7">
+              <markdown
+                class="prose font-monasans w-full grid max-w-full"
+                [data]="message.prompt"
+              >
+              </markdown>
+              <span
+                class="absolute top-0 right-7 font-monasans font-normal text-lg text-project-blue-200"
+                >{{ message.prompt_time | date: "h:mm" }}</span
+              >
+            </div>
+          }
+          @if (message.completion) {
+            <div class="relative pt-7">
+              <markdown
+                class="prose font-monasans w-full grid max-w-full"
+                [data]="message.completion"
+              >
+              </markdown>
+              <span
+                class="absolute top-0 right-7 font-monasans font-normal text-lg text-project-blue-200"
+                >{{ message.completion_time | date: "h:mm" }}</span
+              >
+            </div>
+          }
+        }
+      </div>
+      <form [formGroup]="messageForm" class="mt-auto px-7 relative">
+        <textarea
+          #textarea
+          [formControl]="messageForm.controls.input"
+          tabindex="0"
+          rows="1"
+          placeholder="Message..."
+          (input)="onInput($event)"
+          class="m-0 w-full border border-project-neutral rounded-md p-2 pr-9 focus:outline-project-blue-100 input-icon resize-none scrollbar max-h-52 block"
+        ></textarea>
+        <button class="absolute bottom-2 right-10" (click)="handleMessage()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 256 256"
+          >
+            <path
+              [ngClass]="
+                messageForm.controls.input.value
+                  ? 'fill-project-blue-200'
+                  : 'fill-project-neutral'
+              "
+              fill="currentColor"
+              d="m223.87 114l-168-95.89a16 16 0 0 0-22.94 19.21l31 90.47a.42.42 0 0 0 0 .1a.3.3 0 0 0 0 .1l-31 90.67A16 16 0 0 0 48 240a16.14 16.14 0 0 0 7.92-2.1l167.91-96.05a16 16 0 0 0 .05-27.89ZM48 224v-.09L78.14 136H136a8 8 0 0 0 0-16H78.22L48.06 32.12L48 32l168 95.83Z"
+            />
+          </svg>
+        </button>
+      </form>
+    </div>
   }
 </div>
 <svg

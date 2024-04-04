@@ -48,7 +48,7 @@ export class TemplatesComponent implements OnInit, AfterViewInit {
 
   constructor(
     private categoryService: CategoryService,
-    private templateService: TemplateService
+    private templateService: TemplateService,
   ) {}
 
   ngOnInit(): void {
@@ -75,7 +75,7 @@ export class TemplatesComponent implements OnInit, AfterViewInit {
       (error) => {
         console.error(error);
         this.isLoading = false;
-      }
+      },
     );
   }
 
@@ -90,7 +90,7 @@ export class TemplatesComponent implements OnInit, AfterViewInit {
             this.templateList!.nativeElement.scrollLeft -= 250;
           }
           event.preventDefault();
-        }
+        },
       );
     }
   }
@@ -122,7 +122,7 @@ export class TemplatesComponent implements OnInit, AfterViewInit {
 
       const templates = this.filteredTemplates.filter((template) => {
         return template.categories_on_template.some(
-          (cat) => cat.category_id === category.category_id
+          (cat) => cat.category_id === category.category_id,
         );
       });
 
@@ -149,7 +149,7 @@ export class TemplatesComponent implements OnInit, AfterViewInit {
       return (
         this.active_category_id === 0 ||
         template.categories_on_template.some(
-          (cat) => cat.category_id === this.active_category_id
+          (cat) => cat.category_id === this.active_category_id,
         )
       );
     });

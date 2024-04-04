@@ -97,7 +97,7 @@ export class ChatComponent implements OnInit {
     private templateService: TemplateService,
     private conversationService: ConversationService,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
   ) {}
 
   ngOnInit(): void {
@@ -191,7 +191,7 @@ export class ChatComponent implements OnInit {
         console.log('this.conversations', this.conversations);
         console.log(
           'conversations[selectedConversation].messages',
-          this.conversations[this.selectedConversation].messages
+          this.conversations[this.selectedConversation].messages,
         );
         this.isLoading = false;
         this.isGenerating = false;

@@ -65,7 +65,7 @@ export class PromptsComponent implements OnInit {
             template_id: 2,
           },
         ],
-      }
+      },
     );
   }
 }

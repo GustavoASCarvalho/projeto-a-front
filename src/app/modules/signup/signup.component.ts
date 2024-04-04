@@ -30,7 +30,10 @@ export class SignupComponent {
     ]),
   });
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     this.form.valueChanges.subscribe((_) => {
@@ -44,7 +47,7 @@ export class SignupComponent {
       this.authService
         .register(
           this.form.controls.email.value!,
-          this.form.controls.password.value!
+          this.form.controls.password.value!,
         )
         .subscribe({
           next: (res) => {

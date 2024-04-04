@@ -37,6 +37,6 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
         authService.logout();
       }
       throw err;
-    })
+    }),
   );
 };

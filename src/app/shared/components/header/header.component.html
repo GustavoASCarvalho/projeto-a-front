@@ -82,51 +82,55 @@
     <i class="ph-bold ph-caret-down pr-3 hidden md:block text-[15px]"></i>
     <img class="w-[40px] h-[40px] rounded-full" src="{{ photoUrl }}" alt="" />
   </div>
-  @if(toolTipOpen) {
-  <div
-    #toolTip
-    class="absolute top-[68px] right-[1.5rem] md:right-[2.5rem] lg:right-[100px] w-auto min-w-[250px] bg-white shadow-lg rounded-md border border-project-neutral-100 z-20 overflow-hidden"
-  >
-    <div class="flex flex-col">
-      <div class="flex gap-2 items-center p-4 border-b border-[#E8EDFF]">
-        <img
-          class="w-[32px] h-[32px] rounded-full"
-          src="{{ photoUrl }}"
-          alt=""
-        />
-        <div class="flex flex-col">
-          <span
-            class="font-monasans font-medium text-sm text-project-black-500"
-            >{{ name }}</span
+  @if (toolTipOpen) {
+    <div
+      #toolTip
+      class="absolute top-[68px] right-[1.5rem] md:right-[2.5rem] lg:right-[100px] w-auto min-w-[250px] bg-white shadow-lg rounded-md border border-project-neutral-100 z-20 overflow-hidden"
+    >
+      <div class="flex flex-col">
+        <div class="flex gap-2 items-center p-4 border-b border-[#E8EDFF]">
+          <img
+            class="w-[32px] h-[32px] rounded-full"
+            src="{{ photoUrl }}"
+            alt=""
+          />
+          <div class="flex flex-col">
+            <span
+              class="font-monasans font-medium text-sm text-project-black-500"
+              >{{ name }}</span
+            >
+            <span class="font-monasans font-normal text-xs text-[#798397]"
+              >email&#64;gmail.com</span
+            >
+          </div>
+        </div>
+        <div class="flex flex-col border-b border-[#E8EDFF]">
+          <div
+            class="flex gap-2 items-center p-4 cursor-pointer hover:bg-slate-200 transition-all duration-300"
+            [routerLink]="'/prompts'"
           >
-          <span class="font-monasans font-normal text-xs text-[#798397]"
-            >email&#64;gmail.com</span
+            <i class="ph ph-user-list text-xl"></i>
+            <span class="font-monasans text-[#444D61] text-sm"
+              >Your Prompts</span
+            >
+          </div>
+          <div
+            class="flex gap-2 items-center p-4 cursor-pointer hover:bg-slate-200 transition-all duration-300"
           >
-        </div>
-      </div>
-      <div class="flex flex-col border-b border-[#E8EDFF]">
-        <div
-          class="flex gap-2 items-center p-4 cursor-pointer hover:bg-slate-200 transition-all duration-300"
-          [routerLink]="'/prompts'"
-        >
-          <i class="ph ph-user-list text-xl"></i>
-          <span class="font-monasans text-[#444D61] text-sm">Your Prompts</span>
+            <i class="ph ph-plus text-xl"></i>
+            <span class="font-monasans text-[#444D61] text-sm"
+              >New Template</span
+            >
+          </div>
         </div>
         <div
-          class="flex gap-2 items-center p-4 cursor-pointer hover:bg-slate-200 transition-all duration-300"
+          class="flex p-4 gap-2 cursor-pointer hover:bg-red-500 transition-all duration-300"
+          (click)="logout()"
         >
-          <i class="ph ph-plus text-xl"></i>
-          <span class="font-monasans text-[#444D61] text-sm">New Template</span>
+          <i class="ph ph-sign-out text-xl"></i>
+          <span class="font-monasans text-sm">Sign out</span>
         </div>
-      </div>
-      <div
-        class="flex p-4 gap-2 cursor-pointer hover:bg-red-500 transition-all duration-300"
-        (click)="logout()"
-      >
-        <i class="ph ph-sign-out text-xl"></i>
-        <span class="font-monasans text-sm">Sign out</span>
       </div>
     </div>
-  </div>
   }
 </div>
