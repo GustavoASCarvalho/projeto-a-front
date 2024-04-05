@@ -1,5 +1,5 @@
 <app-header />
-<div class="flex flex-col items-center mt-20 w-fit mx-auto gap-8">
+<div class="flex flex-col items-center mt-20 pb-20 w-fit mx-auto gap-8">
   <div class="flex items-center gap-4">
     <div
       class="rounded-[50%] h-[50px] w-[50px] hover:opacity-70 transition-all duration-300 ease-in-out cursor-pointer overflow-auto"
@@ -15,39 +15,50 @@
       class="border-b border-project-neutral pe-2 focus:outline-none text-xl font-bold text-slate-900 placeholder:text-slate-900 w-[200px] md:w-[300px]"
       type="text"
       placeholder="My Prompt Name"
+      [formControl]="form.controls['name']"
     />
   </div>
   <textarea
     class="overflow-y-hidden rounded-lg p-2 border border-slate-300 focus:outline-none w-[266px] md:w-[366px] h-[100px] text-slate-900 placeholder-slate-900 resize-none text-sm"
     placeholder="Small description about the prompt propose"
+    [formControl]="form.controls['description']"
   ></textarea>
   <div class="flex gap-4 w-[266px] md:w-[366px] flex-wrap justify-center">
     @for (categorie of categories; track categorie.id) {
       <span
         class="h-fit p-2 px-3 bg-slate-100 border hover:bg-slate-300 border-slate-300 text-xs rounded-3xl cursor-pointer transition-all duration-300 ease-in-out"
         [ngClass]="categorie.selected ? 'bg-slate-300' : ''"
-        (click)="categorie.selected = !categorie.selected"
+        (click)="selectCategory(categorie)"
         >{{ categorie.name }}</span
       >
     }
   </div>
-  <div class="flex flex-col gap-3 w-full">
+  <div class="flex flex-col gap-3 items-start">
     <div class="flex gap-2">
-      <input type="radio" name="visibility" checked />
+      <input
+        type="radio"
+        name="visibility"
+        checked
+        (change)="selectVisibility('PRIVATE')"
+      />
       <div class="flex items-center gap-1">
         <i class="ph ph-lock-simple"></i>
         <span class="text-slate-900 font-bold">Private</span>
       </div>
     </div>
     <div class="flex gap-2">
-      <input type="radio" name="visibility" />
+      <input
+        type="radio"
+        name="visibility"
+        (change)="selectVisibility('PUBLIC')"
+      />
       <div class="flex items-center gap-1">
         <i class="ph ph-lock-simple-open"></i>
         <span class="text-slate-900 font-bold">Public</span>
       </div>
     </div>
   </div>
-  <div class="flex flex-col gap-3">
+  <div class="flex flex-col gap-3 items-center">
     <div class="text-center">
       <h2 class="font-bold">Write your prompt</h2>
       <span class="text-xs"
@@ -55,21 +66,117 @@
         <span class="font-bold">{{"{{variable_name}}"}}</span>
       </span>
     </div>
-    <div #container class="w-[266px] md:w-[366px] h-[100px] block m">
-      <div
-        #backdrop
-        class="w-[266px] md:w-[366px] h-[100px] absolute z-10 rounded-lg border border-slate-300 bg-white overflow-x-hidden overflow-y-hidden pointer-events-none transition-all duration-1000"
-      >
-        <div
-          #highlights
-          class="w-[266px] md:w-[366px] h-[100px] p-2 text-sm"
-        ></div>
+    <textarea
+      #textarea
+      (input)="onInput(textarea.value)"
+      class="overflow-x-hidden overflow-y-hidden rounded-lg p-2 border border-slate-300 focus:outline-none w-[266px] md:w-[366px] h-[100px] text-slate-900 placeholder-slate-900 resize-none text-sm"
+      placeholder="Write your prompt here..."
+      [formControl]="form.controls['prompt']"
+    ></textarea>
+    @if (variables && variables.length > 0) {
+      <h2 class="font-bold text-center">Variables</h2>
+      <div class="flex flex-row gap-2">
+        <div>
+          <table class="text-left font-medium max-w-[150px]" [cellPadding]="8">
+            <tr
+              class="text-sm border-b border-transparent opacity-0 pointer-events-none"
+            >
+              <th>Value</th>
+            </tr>
+            @for (variable of variables.controls; track $index) {
+              <tr class="text-xs font-normal">
+                <td class="cursor-text text-end">
+                  <span
+                    class="bg-slate-900 rounded-full p-1 px-2 text-project-neutral-100 max-w-[150px] overflow-hidden overflow-ellipsis whitespace-nowrap"
+                    >{{ maskMaxLength(variable.value.value, 20) }}</span
+                  >
+                </td>
+              </tr>
+            }
+          </table>
+        </div>
+        <div class="border border-slate-300 rounded-lg">
+          <table class="text-left font-medium w-full" [cellPadding]="8">
+            <tr class="text-sm border-b border-slate-300">
+              <th>Name</th>
+              <th>Placeholder</th>
+              <th>Tip</th>
+              <th>Type</th>
+            </tr>
+            @for (
+              variable of variables.controls;
+              track variable;
+              let i = $index
+            ) {
+              <tr class="text-xs font-normal">
+                <td class="cursor-text" (click)="variableInputName.focus()">
+                  <input
+                    #variableInputName
+                    type="text"
+                    class="h-full w-auto focus:outline-none"
+                    placeholder="Variable Name"
+                    [formControl]="variableNameByIndex(i)"
+                  />
+                </td>
+                <td
+                  class="cursor-text"
+                  (click)="variableInputPlaceholder.focus()"
+                >
+                  <input
+                    #variableInputPlaceholder
+                    type="text"
+                    class="h-full w-auto focus:outline-none"
+                    placeholder="Variable Placeholder"
+                    [formControl]="variablePlaceholderByIndex(i)"
+                  />
+                </td>
+                <td class="cursor-text" (click)="variableInputTip.focus()">
+                  <input
+                    #variableInputTip
+                    type="text"
+                    class="h-full w-auto focus:outline-none"
+                    placeholder="Variable Tip"
+                    [formControl]="variableTipByIndex(i)"
+                  />
+                </td>
+                <td class="cursor-text" (click)="variableInputType.focus()">
+                  <input
+                    #variableInputType
+                    type="text"
+                    class="h-full w-auto focus:outline-none"
+                    placeholder="Variable Type"
+                    [formControl]="variableTypeByIndex(i)"
+                  />
+                </td>
+              </tr>
+            }
+          </table>
+        </div>
       </div>
-      <textarea
-        #textarea
-        class="overflow-x-hidden overflow-y-hidden rounded-lg p-2 border border-slate-300 focus:outline-none w-[266px] md:w-[366px] h-[100px] text-slate-900 placeholder-slate-900 resize-none text-sm block absolute z-20 bg-transparent"
-        placeholder="Write your prompt here..."
-      ></textarea>
-    </div>
+    }
+  </div>
+  <div>
+    <button
+      [disabled]="isLoading || form.invalid"
+      (click)="handleSubmit()"
+      class="font-monasans font-normal text-base flex gap-[10px] items-center fill-white text-white py-2 rounded-md mt-auto whitespace-nowrap w-full border px-8 justify-center"
+      [ngClass]="
+        isLoading || form.invalid
+          ? 'border-project-blue-300 bg-slate-300'
+          : 'border-project-blue-200 bg-project-blue-200 '
+      "
+    >
+      <div class="flex gap-[10px]">
+        <span
+          [ngClass]="
+            isLoading || form.invalid
+              ? 'text-project-blue-200'
+              : 'text-project-neutral-100'
+          "
+        >
+          Create
+        </span>
+      </div>
+    </button>
   </div>
 </div>
