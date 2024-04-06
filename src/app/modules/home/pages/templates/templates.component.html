@@ -110,7 +110,7 @@
       }
     </div>
   } @else {
-    <div class="sm:absolute sm:top-0 pb-5">
+    <div class="sm:absolute sm:top-0 pb-5 sm:left-0 sm:right-0">
       @for (template of templatesListMode; track template.category_id) {
         <app-category-button
           [name]="categoryName(template.category_id)"

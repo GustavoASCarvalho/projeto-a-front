@@ -139,14 +139,22 @@
                     [formControl]="variableTipByIndex(i)"
                   />
                 </td>
-                <td class="cursor-text" (click)="variableInputType.focus()">
-                  <input
+                <td class="cursor-pointer" (click)="variableInputType.click()">
+                  <!-- <input
                     #variableInputType
                     type="text"
                     class="h-full w-auto focus:outline-none"
                     placeholder="Variable Type"
                     [formControl]="variableTypeByIndex(i)"
-                  />
+                  /> -->
+                  <select
+                    #variableInputType
+                    class="h-full w-auto focus:outline-none cursor-pointer"
+                    [formControl]="variableTypeByIndex(i)"
+                  >
+                    <option value="TEXT" selected>TEXT</option>
+                    <option value="STRING">STRING</option>
+                  </select>
                 </td>
               </tr>
             }

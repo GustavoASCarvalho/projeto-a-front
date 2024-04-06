@@ -1,14 +1,32 @@
-import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ApiReponse } from '../types/api.types';
+import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { ApiReponse } from '../types/api.types';
 
 export enum visibility {
   PUBLIC,
   PRIVATE,
   NOT_LISTED,
 }
+
+export type CreatingTemplateRequest = {
+  logo_url: string;
+  name: string;
+  description: string;
+  prompt: string;
+  visibility: visibility;
+  variables: [
+    {
+      name: string;
+      value: string;
+      placeholder: string;
+      type: 'STRING' | 'TEXT';
+      tip: string;
+    },
+  ];
+  categories: number[];
+};
 
 export type template = {
   template_id: number;
@@ -70,5 +88,11 @@ export class TemplateService {
     return this.http.get(
       `${environment.apiUrl}/template/${slug}`,
     ) as Observable<ApiReponse<template>>;
+  }
+
+  create(data: CreatingTemplateRequest) {
+    return this.http.post(`${environment.apiUrl}/template`, data) as Observable<
+      ApiReponse<template>
+    >;
   }
 }

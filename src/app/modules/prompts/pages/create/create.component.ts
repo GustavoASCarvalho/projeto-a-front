@@ -7,7 +7,12 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import { CategoryService } from '../../../../services/category.service';
+import {
+  CreatingTemplateRequest,
+  TemplateService,
+} from '../../../../services/template.service';
 import { HeaderComponent } from '../../components/header/header.component';
 
 type Variable = {
@@ -45,7 +50,11 @@ export class CreateComponent implements OnInit {
     categories: new FormArray([]),
   });
 
-  constructor(private categoryService: CategoryService) {}
+  constructor(
+    private categoryService: CategoryService,
+    private templateService: TemplateService,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     this.categoryService.list().subscribe((data) => {
@@ -60,11 +69,9 @@ export class CreateComponent implements OnInit {
     selected: boolean;
     name: string;
   }) {
-    console.log('category', category);
     const categoryFinded = this.categories.find(
       (c) => c.category_id === category.category_id,
     );
-    console.log('categoryFinded', categoryFinded);
     if (categoryFinded) {
       categoryFinded.selected = !categoryFinded.selected;
       if (!categoryFinded.selected) {
@@ -100,32 +107,6 @@ export class CreateComponent implements OnInit {
       });
     }
   }
-  // onInput(value: string) {
-  //   const regex = /\{\{(\w+)\}\}/g;
-  //   const matches = value.match(regex);
-  //   const oldVariables = [...this.variables.controls];
-  //   this.variables.controls = [];
-  //   if (matches) {
-  //     matches.map((match) => {
-  //       const variable = match.slice(2, -2);
-  //       const existsInOld = oldVariables.find((v) => v.value.name === variable);
-  //       const exists = this.variables.controls.find(
-  //         (v) => v.value.name === variable,
-  //       );
-  //       if (existsInOld && !exists) {
-  //         this.variables.push(existsInOld);
-  //       } else if (!existsInOld && !exists) {
-  //         this.addVariable({
-  //           name: '',
-  //           value: variable,
-  //           placeholder: '',
-  //           type: 'STRING',
-  //           tip: '',
-  //         });
-  //       }
-  //     });
-  //   }
-  // }
 
   selectVisibility(value: string) {
     console.log(value);
@@ -137,13 +118,21 @@ export class CreateComponent implements OnInit {
   }
 
   handleSubmit() {
-    // set is loading by 300ms to show the loading spinner
     console.log(this.form.value);
+
+    if (!this.form.valid) {
+      return;
+    }
+
     this.isLoading = true;
 
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 300);
+    this.templateService
+      .create(this.form.value as unknown as CreatingTemplateRequest)
+      .subscribe((data) => {
+        console.log(data);
+        this.isLoading = false;
+        this.router.navigate(['/']);
+      });
   }
 
   get variables() {
