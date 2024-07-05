@@ -1,23 +1,22 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './modules/home/home.component';
-import { authGuard } from './shared/guards/auth.guard';
+import { ChatComponent } from './modules/chat/chat.component';
+import { HomeComponent as RouterHomeComponent } from './modules/home/home.component';
+import { HistoricComponent } from './modules/home/pages/historic/historic.component';
+import { HomeComponent } from './modules/home/pages/home/home.component';
+import { TemplatesComponent } from './modules/home/pages/templates/templates.component';
 import { SigninComponent } from './modules/signin/signin.component';
 import { SignupComponent } from './modules/signup/signup.component';
-import { TemplatesComponent } from './modules/home/pages/templates/templates.component';
-import { BComponent } from './modules/home/pages/b/b.component';
-import { ChatComponent } from './modules/chat/chat.component';
-import { HistoricComponent } from './modules/home/pages/historic/historic.component';
+import { authGuard } from './shared/guards/auth.guard';
 
 export const routes: Routes = [
   {
     path: 'home',
-    component: HomeComponent,
+    component: RouterHomeComponent,
     canActivate: [authGuard],
-    title: 'Home',
     children: [
-      { path: '', component: TemplatesComponent, title: 'A' },
+      { path: '', component: HomeComponent, title: 'Home' },
       { path: 'history', component: HistoricComponent, title: 'History' },
-      { path: 'c', component: BComponent, title: 'C' },
+      { path: 'templates', component: TemplatesComponent, title: 'Templates' },
     ],
   },
   {

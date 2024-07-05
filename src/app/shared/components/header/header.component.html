@@ -1,3 +1,30 @@
+<app-modal #apikeyModal>
+  <form [formGroup]="form" (ngSubmit)="handleSubmit()" class="flex flex-col">
+    <label class="font-monasans font-normal text-base leading-6">Name </label>
+    <input
+      class="border border-project-neutral rounded-md p-2 w-80 mt-3 mb-8 focus:outline-project-blue-100"
+      type="text"
+      formControlName="name"
+      placeholder="name"
+    />
+    <label class="font-monasans font-normal text-base leading-6"
+      >Api Key
+    </label>
+    <input
+      class="border border-project-neutral rounded-md p-2 w-80 mt-3 mb-8 focus:outline-project-blue-100"
+      type="password"
+      formControlName="api_key"
+      placeholder="api_key"
+    />
+    <button
+      [disabled]="!form.valid"
+      type="submit"
+      class="w-80 p-2 bg-project-blue-200 text-white font-monasans font-normal text-base rounded-md focus:outline-project-blue-100 disabled:bg-project-black-100 transition duration-300 ease-in-out"
+    >
+      Register
+    </button>
+  </form>
+</app-modal>
 <div
   class="w-full h-[68px] flex flex-row items-center justify-between px-6 md:px-10 lg:px-[100px] border-b border-project-neutral-100"
 >
@@ -10,7 +37,7 @@
       [routerLinkActiveOptions]="{ exact: true }"
     >
       <i
-        class="ph ph-list-dashes text-project-black-200 text-2xl"
+        class="ph ph-house text-project-black-200 text-2xl"
         [routerLinkActive]="['text-project-blue-100']"
         [routerLinkActiveOptions]="{ exact: true }"
       ></i>
@@ -19,14 +46,14 @@
         [routerLinkActive]="['max-w-[100px]']"
         [routerLinkActiveOptions]="{ exact: true }"
       >
-        Templates
+        Home
       </span>
     </button>
 
     <button
       class="flex flex-row px-6 md:px-8 py-2 gap-2 font-monasans text-base font-medium rounded-full relative w-100 text-project-black-200"
       [routerLinkActive]="['active']"
-      [routerLink]="'/home/c'"
+      [routerLink]="'/home/templates'"
       [routerLinkActiveOptions]="{ exact: true }"
     >
       <i
@@ -39,7 +66,7 @@
         [routerLinkActive]="['max-w-[100px]']"
         [routerLinkActiveOptions]="{ exact: true }"
       >
-        Chats
+        Templates
       </span>
     </button>
 
@@ -102,27 +129,12 @@
       <div class="flex flex-col border-b border-[#E8EDFF]">
         <div
           class="flex gap-2 items-center p-4 cursor-pointer hover:bg-slate-200 transition-all duration-300"
+          (click)="openApiKeyModal()"
         >
           <i class="ph ph-plus text-xl"></i>
-          <span class="font-monasans text-[#444D61] text-sm">New Template</span>
-        </div>
-        <div
-          class="flex gap-2 items-center p-4 cursor-pointer hover:bg-slate-200 transition-all duration-300"
-        >
-          <i class="ph ph-plus text-xl"></i>
-          <span class="font-monasans text-[#444D61] text-sm">New Template</span>
-        </div>
-        <div
-          class="flex gap-2 items-center p-4 cursor-pointer hover:bg-slate-200 transition-all duration-300"
-        >
-          <i class="ph ph-plus text-xl"></i>
-          <span class="font-monasans text-[#444D61] text-sm">New Template</span>
-        </div>
-        <div
-          class="flex gap-2 items-center p-4 cursor-pointer hover:bg-slate-200 transition-all duration-300"
-        >
-          <i class="ph ph-plus text-xl"></i>
-          <span class="font-monasans text-[#444D61] text-sm">New Template</span>
+          <span class="font-monasans text-[#444D61] text-sm"
+            >Register API key</span
+          >
         </div>
       </div>
       <div

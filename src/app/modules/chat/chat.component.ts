@@ -1,11 +1,5 @@
-import { ConversationService } from './../../services/conversation.service';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
-import { TemplateService, template } from '../../services/template.service';
-import { HeaderComponent } from './components/header/header.component';
-import { MenuComponent } from './components/menu/menu.component';
-import { InputComponent } from './components/input/input.component';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -13,8 +7,18 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ModalComponent } from '../../shared/components/modal/modal.component';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MarkdownModule, provideMarkdown } from 'ngx-markdown';
+import {
+  ChatgptApiKeyService,
+  chatgpt_api_key,
+} from '../../services/chatgpt-api-key.service';
+import { TemplateService, template } from '../../services/template.service';
+import { ModalComponent } from '../../shared/components/modal/modal.component';
+import { ConversationService } from './../../services/conversation.service';
+import { HeaderComponent } from './components/header/header.component';
+import { InputComponent } from './components/input/input.component';
+import { MenuComponent } from './components/menu/menu.component';
 
 @Component({
   selector: 'app-chat',
@@ -41,32 +45,7 @@ export class ChatComponent implements OnInit {
 
   slug: string | null = null;
   template: template | null = null;
-  chat_gpt_api_keys = [
-    {
-      chatgpt_api_key_id: 2,
-      user_id: 1,
-      name: 'Minha Chave 4.0',
-      created_at: '2023-12-08T21:58:18.954Z',
-    },
-    {
-      chatgpt_api_key_id: 3,
-      user_id: 1,
-      name: 'Minha Chave 4.0',
-      created_at: '2023-12-08T21:58:18.954Z',
-    },
-    {
-      chatgpt_api_key_id: 4,
-      user_id: 1,
-      name: 'Minha Chave 4.0',
-      created_at: '2023-12-08T21:58:18.954Z',
-    },
-    {
-      chatgpt_api_key_id: 5,
-      user_id: 1,
-      name: 'Minha Chave 1.0',
-      created_at: '2023-12-08T21:58:18.954Z',
-    },
-  ];
+  chat_gpt_api_keys: chatgpt_api_key[] = [];
   sidebarOpen = true;
   isLoading = false;
   isGenerating = false;
@@ -95,6 +74,7 @@ export class ChatComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private templateService: TemplateService,
+    private chatgptApiKeyService: ChatgptApiKeyService,
     private conversationService: ConversationService,
     private router: Router,
     private fb: FormBuilder
@@ -104,6 +84,21 @@ export class ChatComponent implements OnInit {
     this.slug = this.route.snapshot.paramMap.get('slug');
     if (!this.slug) return;
     this.isLoading = true;
+    this.chatgptApiKeyService.list().subscribe({
+      next: (res) => {
+        if (res.statusCode === 200) {
+          this.chat_gpt_api_keys = res.data;
+          if (this.chat_gpt_api_keys.length > 0) {
+            this.form
+              .get('chat_gpt_api_key_id')
+              ?.setValue(this.chat_gpt_api_keys[0].chatgpt_api_key_id);
+          }
+        }
+      },
+      error: (err) => {
+        console.error(err);
+      },
+    });
     this.templateService.getBySlug(this.slug).subscribe({
       next: (res) => {
         if (res.statusCode === 200) {
@@ -120,10 +115,8 @@ export class ChatComponent implements OnInit {
         console.error(err);
       },
     });
-    this.form
-      .get('chat_gpt_api_key_id')
-      ?.setValue(this.chat_gpt_api_keys[0].chatgpt_api_key_id);
-    this.handleSubmit();
+
+    // this.handleSubmit();
   }
 
   onClose(): void {
@@ -182,27 +175,34 @@ export class ChatComponent implements OnInit {
     if (this.form.invalid) return;
     this.isLoading = true;
     this.isGenerating = true;
-    this.conversationService.getResult().subscribe({
-      next: (res: any) => {
-        console.log('res', res);
-
-        this.conversations.push(res.data);
-        this.selectedConversation = this.conversations.length - 1;
-        console.log('this.conversations', this.conversations);
-        console.log(
-          'conversations[selectedConversation].messages',
-          this.conversations[this.selectedConversation].messages
-        );
-        this.isLoading = false;
-        this.isGenerating = false;
-        this.scrollScreenToBottom();
-      },
-      error: (err) => {
-        this.isLoading = false;
-        this.isGenerating = false;
-        console.error(err);
-      },
-    });
+    this.conversationService
+      .complete({
+        slug: this.slug!, 
+        chat_gpt_api_key_id: this.form.value.chat_gpt_api_key_id!,
+        variables: this.variables.value,
+      })
+      .subscribe({
+        next: (res: any) => {
+          console.log('res', res);
+          if (res.statusCode == 200) {
+            this.conversations.push(res.data);
+            this.selectedConversation = this.conversations.length - 1;
+            console.log('this.conversations', this.conversations);
+            console.log(
+              'conversations[selectedConversation].messages',
+              this.conversations[this.selectedConversation].messages
+            );
+            this.isLoading = false;
+            this.isGenerating = false;
+            this.scrollScreenToBottom();
+          }
+        },
+        error: (err) => {
+          this.isLoading = false;
+          this.isGenerating = false;
+          console.error(err);
+        },
+      });
   }
 
   onInput(event: Event): void {

@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
+import { ApiReponse } from '../types/api.types';
 
 @Injectable({
   providedIn: 'root',
@@ -8,11 +10,17 @@ import { Observable } from 'rxjs';
 export class ConversationService {
   constructor(private http: HttpClient) {}
 
-  getResult() {
-    // return this.http.get(`${environment.apiUrl}/template`) as Observable<
-    //   ApiReponse<Array<template>>
-    // >;
-    // a fake response as a observable
+  complete(data: {
+    slug: string;
+    chat_gpt_api_key_id: number;
+    variables: Array<{
+      name: string;
+      value: string;
+    }>;
+  }) {
+    return this.http.post(`${environment.apiUrl}/conversation`, {
+      ...data,
+    }) as Observable<ApiReponse<string>>;
 
     return new Observable((observer) => {
       setTimeout(() => {

@@ -1,0 +1,135 @@
+<div class="relative">
+  <div
+    class="flex flex-col sm:flex-row items-center justify-between px-6 md:px-10 lg:px-[100px] w-full gap-5 sm:gap-14 py-5"
+  >
+    @if(viewMode === 'grid') {
+    <div class="overlay relative overflow-auto w-full">
+      <div
+        #templateList
+        class="flex flex-row overflow-x-scroll scrollbar-none gap-3 scroll-smooth pe-10"
+      >
+        @for(c of categories; track c.category_id){
+        <button
+          (click)="selectTemplate(c.category_id)"
+          class="px-4 py-3 font-monasans font-medium text-sm text-project-black-500 whitespace-nowrap rounded-full border border-project-black-50 cursor-pointer transition-colors duration-200 ease-in"
+          [ngClass]="c.isAtive ? 'bg-project-black-50' : ''"
+        >
+          {{ c.name }}
+        </button>
+        }
+      </div>
+    </div>
+    }
+
+    <div class="flex flex-row gap-7 sm:ms-auto z-10 w-full sm:w-auto">
+      <div class="relative flex-1 sm:flex-none">
+        <svg
+          class="absolute left-8 top-3"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 256 256"
+        >
+          <path
+            [ngClass]="
+              isSearchActive
+                ? 'fill-project-black-500'
+                : 'fill-project-black-100'
+            "
+            fill="currentColor"
+            d="m229.66 218.34l-50.07-50.06a88.11 88.11 0 1 0-11.31 11.31l50.06 50.07a8 8 0 0 0 11.32-11.32M40 112a72 72 0 1 1 72 72a72.08 72.08 0 0 1-72-72"
+          />
+        </svg>
+        <input
+          (focus)="isSearchActive = true"
+          (focusout)="isSearchActive = false"
+          [(ngModel)]="searchValue"
+          (input)="applyFilters()"
+          placeholder="Search"
+          type="text"
+          class="0 px-8 ps-16 py-3 rounded-full border border-project-black-50 flex items-center gap-2 font-monasans font-normal text-sm transition-all duration-200 ease-in-out"
+          [ngClass]="
+            isSearchActive
+              ? 'w-60 text-project-black-500'
+              : 'w-36 text-project-black-100'
+          "
+        />
+      </div>
+      <button (click)="changeViewMode('grid')">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 256 256"
+        >
+          <path
+            [ngClass]="
+              viewMode === 'grid'
+                ? 'fill-project-black-500'
+                : 'fill-project-black-100'
+            "
+            fill="currentColor"
+            d="M200 40H56a16 16 0 0 0-16 16v144a16 16 0 0 0 16 16h144a16 16 0 0 0 16-16V56a16 16 0 0 0-16-16m0 80h-64V56h64Zm-80-64v64H56V56Zm-64 80h64v64H56Zm144 64h-64v-64h64z"
+          />
+        </svg>
+      </button>
+      <button (click)="changeViewMode('list')">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 256 256"
+        >
+          <path
+            [ngClass]="
+              viewMode === 'list'
+                ? 'fill-project-black-500'
+                : 'fill-project-black-100'
+            "
+            fill="currentColor"
+            d="M208 136H48a16 16 0 0 0-16 16v40a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16v-40a16 16 0 0 0-16-16m0 56H48v-40h160zm0-144H48a16 16 0 0 0-16 16v40a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16V64a16 16 0 0 0-16-16m0 56H48V64h160z"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  @if(viewMode === 'grid') {
+  <div
+    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 grid-flow-row gap-4 px-6 md:px-10 lg:px-[100px]"
+  >
+    @for(t of filteredTemplates; track t.template_id) {
+    <app-card
+      [slug]="t.slug"
+      [description]="t.description"
+      [icon_url]="
+        'https://www.myany.city/sites/default/files/styles/scaled_cropped_medium__260x260/public/field/image/node-related-images/sample-dwight-k-schrute.jpg?itok=8TfRscbA'
+      "
+      [name]="t.name"
+    ></app-card>
+    }
+  </div>
+  } @else {
+  <div class="sm:absolute sm:top-0 pb-5">
+    @for(template of templatesListMode; track template.category_id) {
+    <app-category-button
+      [name]="categoryName(template.category_id)"
+    ></app-category-button>
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 grid-flow-row gap-4 px-6 md:px-10 lg:px-[100px]"
+    >
+      @for(t of template.templates; track t.template_id) {
+      <app-card
+        [slug]="t.slug"
+        [description]="t.description"
+        [icon_url]="
+          'https://s2.glbimg.com/-9lG_NCCu26MsBAWtrWHr5Cl7Ag=/620x413/smart/e.glbimg.com/og/ed/f/original/2017/12/19/michael-scott-the-office.png'
+        "
+        [name]="t.name"
+      ></app-card>
+      }
+    </div>
+    }
+  </div>
+  }
+</div>

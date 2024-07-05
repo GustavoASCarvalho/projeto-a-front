@@ -6,18 +6,33 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
+import { ChatgptApiKeyService } from '../../../services/chatgpt-api-key.service';
 import { UserService } from '../../../services/user.service';
+import { ModalComponent } from '../modal/modal.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive],
+  imports: [
+    CommonModule,
+    RouterLink,
+    RouterLinkActive,
+    ModalComponent,
+    ReactiveFormsModule,
+  ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent implements OnInit, AfterViewInit {
+  @ViewChild('apikeyModal') apikeyModal!: ModalComponent;
   @ViewChild('toolTip', { static: false }) toolTip: ElementRef | undefined;
   @ViewChild('openToolTip', { static: false }) openToolTip:
     | ElementRef
@@ -27,9 +42,15 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   photoUrl: string = '';
   toolTipOpen: boolean = false;
 
+  form = new FormGroup({
+    name: new FormControl('', [Validators.required]),
+    api_key: new FormControl('', [Validators.required]),
+  });
+
   constructor(
     private userService: UserService,
-    private authService: AuthService
+    private authService: AuthService,
+    private chatgptApiKeyService: ChatgptApiKeyService
   ) {}
 
   ngOnInit(): void {
@@ -64,5 +85,30 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
   logout() {
     this.authService.logout();
+  }
+
+  openApiKeyModal() {
+    this.apikeyModal.toggleModal();
+    this.toggleToolTip();
+  }
+
+  handleSubmit() {
+    console.log('a');
+    if (this.form.invalid) return;
+    console.log('b');
+    console.log(this.form.value);
+    this.chatgptApiKeyService
+      .create(this.form.value.api_key!, this.form.value.name!)
+      .subscribe({
+        next: (res: any) => {
+          if (res.statusCode === 200) {
+            this.apikeyModal.toggleModal();
+            this.form.reset();
+          }
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
   }
 }
