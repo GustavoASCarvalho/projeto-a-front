@@ -1,8 +1,8 @@
-import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ApiReponse } from '../types/api.types';
+import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { ApiReponse } from '../types/api.types';
 
 export enum visibility {
   PUBLIC,
@@ -29,9 +29,24 @@ export type template = {
       visibility: visibility.PUBLIC;
       created_at: Date;
       template_id: number;
+      conversations: {
+        conversation_id: number;
+        template_history_id: number;
+        user_id: number;
+        messages?: {
+          message_id: number;
+          conversation_id: number;
+          chatgpt_api_key_id: number;
+          message: string;
+          response: string | null;
+          message_timestamp: Date;
+          response_timestamp: Date | null;
+        }[];
+      }[];
       variables: [
         {
           name: string;
+          value: string;
           placeholder: string;
           template_history_id: number;
           template_id: null;

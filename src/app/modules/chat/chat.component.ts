@@ -13,8 +13,10 @@ import {
   ChatgptApiKeyService,
   chatgpt_api_key,
 } from '../../services/chatgpt-api-key.service';
+import { MessageService } from '../../services/message.service';
 import { TemplateService, template } from '../../services/template.service';
 import { ModalComponent } from '../../shared/components/modal/modal.component';
+import { Conversation } from '../../types/conversation.type';
 import { ConversationService } from './../../services/conversation.service';
 import { HeaderComponent } from './components/header/header.component';
 import { InputComponent } from './components/input/input.component';
@@ -37,6 +39,7 @@ import { MenuComponent } from './components/menu/menu.component';
   styleUrl: './chat.component.scss',
 })
 export class ChatComponent implements OnInit {
+  //TODO: loading no input de mensagem + bloquear input enquanto carrega
   @ViewChild('clearModal') clearModal!: ModalComponent;
   @ViewChild('textarea', { static: false })
   textarea!: ElementRef<HTMLTextAreaElement>;
@@ -51,7 +54,7 @@ export class ChatComponent implements OnInit {
   isGenerating = false;
 
   form = this.fb.group({
-    chat_gpt_api_key_id: [0, Validators.required],
+    chat_gpt_api_key_id: [0, [Validators.required, Validators.min(1)]],
     variables: this.fb.array([]),
   });
 
@@ -59,15 +62,7 @@ export class ChatComponent implements OnInit {
     input: ['', Validators.required],
   });
 
-  conversations: Array<{
-    conversation_id: number;
-    messages: Array<{
-      prompt: string;
-      completion: string;
-      completion_time: Date;
-      prompt_time: Date;
-    }>;
-  }> = [];
+  conversations: Conversation[] = [];
 
   selectedConversation: number | null = null;
 
@@ -76,6 +71,7 @@ export class ChatComponent implements OnInit {
     private templateService: TemplateService,
     private chatgptApiKeyService: ChatgptApiKeyService,
     private conversationService: ConversationService,
+    private messageService: MessageService,
     private router: Router,
     private fb: FormBuilder
   ) {}
@@ -103,10 +99,18 @@ export class ChatComponent implements OnInit {
       next: (res) => {
         if (res.statusCode === 200) {
           this.template = res.data;
-          const mostRecentTemplateHistory = this.mostRecentTemplateHistory();
-          mostRecentTemplateHistory?.variables.forEach((variable) => {
-            this.addVariable(variable.name);
+          this.mostRecentTemplateHistory()?.variables.forEach((variable) => {
+            this.addVariable(variable.name, variable.value);
           });
+
+          const firstTemplateHistory = this.template.template_history[0];
+
+          if (firstTemplateHistory && firstTemplateHistory.conversations) {
+            firstTemplateHistory.conversations.forEach((conversation) => {
+              this.conversations.push(conversation);
+            });
+            this.selectConversation(this.conversations.length - 1);
+          }
         }
         this.isLoading = false;
       },
@@ -115,7 +119,7 @@ export class ChatComponent implements OnInit {
         console.error(err);
       },
     });
-
+    console.log('this.conversations', this.conversations);
     // this.handleSubmit();
   }
 
@@ -140,9 +144,10 @@ export class ChatComponent implements OnInit {
     return this.mostRecentTemplateHistory()!.variables[index];
   }
 
-  addVariable(name: string) {
+  addVariable(name: string, value: string) {
     const variableForm = this.fb.group({
       name: [name, Validators.required],
+      realName: [value],
       value: ['', Validators.required],
     });
 
@@ -171,30 +176,22 @@ export class ChatComponent implements OnInit {
   }
 
   handleSubmit() {
-    console.log('this.form', this.form);
     if (this.form.invalid) return;
     this.isLoading = true;
     this.isGenerating = true;
     this.conversationService
-      .complete({
-        slug: this.slug!, 
-        chat_gpt_api_key_id: this.form.value.chat_gpt_api_key_id!,
+      .create({
+        slug: this.slug!,
+        chat_gpt_api_key_id: Number(this.form.value.chat_gpt_api_key_id)!,
         variables: this.variables.value,
       })
       .subscribe({
         next: (res: any) => {
-          console.log('res', res);
           if (res.statusCode == 200) {
             this.conversations.push(res.data);
             this.selectedConversation = this.conversations.length - 1;
-            console.log('this.conversations', this.conversations);
-            console.log(
-              'conversations[selectedConversation].messages',
-              this.conversations[this.selectedConversation].messages
-            );
             this.isLoading = false;
             this.isGenerating = false;
-            this.scrollScreenToBottom();
           }
         },
         error: (err) => {
@@ -209,24 +206,12 @@ export class ChatComponent implements OnInit {
     this.adjustTextareaHeight();
   }
 
-  // adjustTextareaHeight(): void {
-  //   const textareaElement = this.textarea.nativeElement;
-  //   const currentHeight = textareaElement.scrollHeight;
-  //   const maxHeight = 200;
-  //   const minHeith = 42;
-
-  //   // Definir a altura máxima como 200px
-  //   if (currentHeight > maxHeight) {
-  //     textareaElement.style.overflowY = 'auto';
-  //     textareaElement.style.height = `${maxHeight}px`;
-  //   } else if (currentHeight < minHeith) {
-  //     textareaElement.style.overflowY = 'auto';
-  //     textareaElement.style.height = `${minHeith}px`;
-  //   } else {
-  //     textareaElement.style.overflowY = 'hidden';
-  //     textareaElement.style.height = `${currentHeight}px`;
-  //   }
-  // }
+  onKeyPress(event: KeyboardEvent): void {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      this.handleMessage();
+    }
+  }
 
   adjustTextareaHeight(): void {
     const textareaElement = this.textarea.nativeElement;
@@ -268,6 +253,11 @@ export class ChatComponent implements OnInit {
     }
   }
 
+  resetInputValue(): void {
+    this.messageForm.reset();
+    this.adjustTextareaHeight();
+  }
+
   handleMessage() {
     if (this.messageForm.valid) {
       const screen = this.screen.nativeElement;
@@ -276,16 +266,34 @@ export class ChatComponent implements OnInit {
       if (screen.scrollHeight - screen.scrollTop === screen.clientHeight)
         scroll = true;
 
-      this.conversations[this.selectedConversation!].messages.push({
-        prompt: this.messageForm.value.input!,
-        prompt_time: new Date(Date.now()),
-        completion: `## Markdown __rulez__!`,
-        completion_time: new Date(Date.now()),
-      });
-      this.messageForm.reset();
-      setTimeout(() => {
-        if (scroll) this.scrollScreenToBottom();
-      }, 100);
+      if (this.conversations?.[this.selectedConversation!]) {
+        const mensagem = this.messageForm.value.input!;
+        this.conversations[this.selectedConversation!].messages!.push({
+          message: mensagem,
+          message_timestamp: new Date(),
+        });
+        this.resetInputValue();
+        setTimeout(() => {
+          if (scroll) this.scrollScreenToBottom();
+        }, 100);
+        this.messageService
+          .create({
+            message: mensagem,
+            chat_gpt_api_key_id: this.form.value.chat_gpt_api_key_id!,
+            conversation_id:
+              this.conversations?.[this.selectedConversation!].conversation_id,
+            slug: this.slug!,
+          })
+          .subscribe((data) => {
+            this.conversations[this.selectedConversation!].messages![
+              this.conversations[this.selectedConversation!].messages!.length -
+                1
+            ] = data.data;
+            setTimeout(() => {
+              if (scroll) this.scrollScreenToBottom();
+            }, 100);
+          });
+      }
     }
   }
 

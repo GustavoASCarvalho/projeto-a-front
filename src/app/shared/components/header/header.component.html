@@ -14,7 +14,7 @@
       class="border border-project-neutral rounded-md p-2 w-80 mt-3 mb-8 focus:outline-project-blue-100"
       type="password"
       formControlName="api_key"
-      placeholder="api_key"
+      placeholder="sk-42a..."
     />
     <button
       [disabled]="!form.valid"
@@ -30,26 +30,6 @@
 >
   <img src="./assets/img/logo.png" alt="" class="hidden md:block" />
   <nav class="flex flex-row" #nav>
-    <button
-      class="flex flex-row px-6 md:px-8 py-2 gap-2 font-monasans text-base font-medium rounded-full relative w-100 text-project-black-200"
-      [routerLinkActive]="['active']"
-      [routerLink]="'/home'"
-      [routerLinkActiveOptions]="{ exact: true }"
-    >
-      <i
-        class="ph ph-house text-project-black-200 text-2xl"
-        [routerLinkActive]="['text-project-blue-100']"
-        [routerLinkActiveOptions]="{ exact: true }"
-      ></i>
-      <span
-        class="max-w-0 overflow-hidden transition-all duration-500 ease-linear hidden md:block"
-        [routerLinkActive]="['max-w-[100px]']"
-        [routerLinkActiveOptions]="{ exact: true }"
-      >
-        Home
-      </span>
-    </button>
-
     <button
       class="flex flex-row px-6 md:px-8 py-2 gap-2 font-monasans text-base font-medium rounded-full relative w-100 text-project-black-200"
       [routerLinkActive]="['active']"
@@ -69,7 +49,25 @@
         Templates
       </span>
     </button>
-
+    <button
+      class="flex flex-row px-6 md:px-8 py-2 gap-2 font-monasans text-base font-medium rounded-full relative w-100 text-project-black-200"
+      [routerLinkActive]="['active']"
+      [routerLink]="'/home'"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <i
+        class="ph ph-house text-project-black-200 text-2xl"
+        [routerLinkActive]="['text-project-blue-100']"
+        [routerLinkActiveOptions]="{ exact: true }"
+      ></i>
+      <span
+        class="max-w-0 overflow-hidden transition-all duration-500 ease-linear hidden md:block"
+        [routerLinkActive]="['max-w-[100px]']"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Home
+      </span>
+    </button>
     <button
       #home
       id="home"

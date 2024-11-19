@@ -210,32 +210,34 @@
     </div>
     <div
       #screen
-      class="flex flex-col px-7 mb-7 overflow-y-auto overflow-x-hidden scrollbar me-4 scroll-smooth"
+      class="flex flex-col mb-7 overflow-y-auto overflow-x-hidden scrollbar me-4 scroll-smooth gap-10"
     >
       @for(message of conversations[selectedConversation].messages; track
-      message; let idx = $index) { @if(message.prompt) {
-      <div class="relative pt-7">
+      message; let idx = $index) { @if(message.message) {
+      <div
+        class="relative pt-10 rounded-xl bg-slate-300 rounded-ss-none p-3 mx-5 me-8"
+      >
         <markdown
           class="prose font-monasans w-full grid max-w-full"
-          [data]="message.prompt"
+          [data]="message.message"
         >
         </markdown>
         <span
-          class="absolute top-0 right-7 font-monasans font-normal text-lg text-project-blue-200"
-          >{{ message.prompt_time | date : "h:mm" }}</span
+          class="absolute top-3 right-7 font-monasans font-normal text-lg text-project-blue-200"
+          >{{ message.message_timestamp | date : "h:mm" }}</span
         >
       </div>
-      } @if(message.completion) {
+      } @if(message.response) {
 
-      <div class="relative pt-7">
+      <div class="relative pt-7 mx-8">
         <markdown
           class="prose font-monasans w-full grid max-w-full"
-          [data]="message.completion"
+          [data]="message.response"
         >
         </markdown>
         <span
           class="absolute top-0 right-7 font-monasans font-normal text-lg text-project-blue-200"
-          >{{ message.completion_time | date : "h:mm" }}</span
+          >{{ message.response_timestamp | date : "h:mm" }}</span
         >
       </div>
       } }
@@ -248,6 +250,7 @@
         rows="1"
         placeholder="Message..."
         (input)="onInput($event)"
+        (keypress)="onKeyPress($event)"
         class="m-0 w-full border border-project-neutral rounded-md p-2 pr-9 focus:outline-project-blue-100 input-icon resize-none scrollbar max-h-52 block"
       ></textarea>
       <button class="absolute bottom-2 right-10" (click)="handleMessage()">

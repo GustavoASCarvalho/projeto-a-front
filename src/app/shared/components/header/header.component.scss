@@ -23,13 +23,13 @@
 @keyframes maxWidthFirst {
   to {
     // (ajuste no efeito de hover do menu) aqui vc coloca o mesmo tamanho do botão que ele ta sobrepondo
-    width: 142px;
+    width: 174px;
   }
 }
 
 @keyframes maxWidthSecond {
   to {
-    width: 174px;
+    width: 142px;
   }
 }
 
@@ -47,7 +47,7 @@
 
 .active:nth-child(1) ~ #home:before {
   // (ajuste no efeito de hover do menu) e aqui você ajusta pra ele ficar exatamente em cima do botão
-  transform: translateX(-240px);
+  transform: translateX(-262px);
   animation: maxWidthFirst 500ms linear forwards;
   @media (max-width: 767px) {
     transform: translateX(-200%);

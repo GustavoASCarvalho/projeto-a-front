@@ -71,17 +71,24 @@
         >
           <span
             class="font-monasans font-semibold text-xl text-project-black-500 whitespace-nowrap overflow-hidden text-ellipsis w-[inherit] text-start"
-            >{{ c.messages[0].prompt }}</span
+            >{{
+              c.template_history?.name
+                ? (c.template_history?.name || "") +
+                  " (" +
+                  c.conversation_id +
+                  ")"
+                : c.conversation_id
+            }}</span
           >
           <div
             class="flex gap-4 font-monasans font-normal text-base text-project-black-10 w-full"
           >
             <span class="w-auto">{{
-              c.messages[0].prompt_time | date : "M/d/y"
+              c.messages?.[0]?.message_timestamp| date : "M/d/y"
             }}</span>
             <span
               class="whitespace-nowrap overflow-hidden text-ellipsis w-auto"
-              >{{ c.messages[0].completion }}</span
+              >{{ c.messages?.[0]?.response }}</span
             >
           </div>
         </button>
@@ -105,50 +112,47 @@
   >
     <div
       #screen
-      class="flex flex-col px-7 mb-7 overflow-y-auto overflow-x-hidden scrollbar me-4 scroll-smooth"
+      class="flex flex-col mb-7 overflow-y-auto overflow-x-hidden scrollbar me-4 scroll-smooth gap-10"
     >
       @for(message of conversations[selectedConversation].messages; track
-      message; let idx = $index) { @if(message.prompt) {
-      <div class="relative pt-7">
+      message; let idx = $index) { @if(message.message) {
+      <div
+        class="relative pt-10 rounded-xl bg-slate-300 rounded-ss-none p-3 mx-5 me-8"
+      >
         <markdown
           class="prose font-monasans w-full grid max-w-full"
-          [data]="message.prompt"
+          [data]="message.message"
+        >
+        </markdown>
+        <span
+          class="absolute top-3 right-7 font-monasans font-normal text-lg text-project-blue-200"
+          >{{ message.message_timestamp | date : "h:mm" }}</span
+        >
+      </div>
+      @if(message.message.length > 300) {
+      <app-copy
+        class="flex justify-end pt-8 me-8"
+        [text]="message.message"
+      ></app-copy>
+      } } @if(message.response) {
+
+      <div class="relative pt-7 mx-8">
+        <markdown
+          class="prose font-monasans w-full grid max-w-full"
+          [data]="message.response"
         >
         </markdown>
         <span
           class="absolute top-0 right-7 font-monasans font-normal text-lg text-project-blue-200"
-          >{{ message.prompt_time | date : "h:mm" }}</span
+          >{{ message.response_timestamp | date : "h:mm" }}</span
         >
       </div>
-      @if(message.prompt.length > 300) {
+      @if(message.response.length > 300) {
       <app-copy
-        class="flex justify-end pt-8"
-        [text]="message.prompt"
+        class="flex justify-end pt-8 me-8"
+        [text]="message.response"
       ></app-copy>
-      }
-      <div class="w-full h-[1px] ml-2 my-8 bg-[#AFBACA]"></div>
-      } @if(message.completion) {
-
-      <div class="relative pt-7">
-        <markdown
-          class="prose font-monasans w-full grid max-w-full"
-          [data]="message.completion"
-        >
-        </markdown>
-        <span
-          class="absolute top-0 right-7 font-monasans font-normal text-lg text-project-blue-200"
-          >{{ message.completion_time | date : "h:mm" }}</span
-        >
-      </div>
-      @if(message.completion.length > 300) {
-      <app-copy
-        class="flex justify-end pt-8"
-        [text]="message.completion"
-      ></app-copy>
-      }
-
-      <div class="w-full h-[1px] ml-2 my-8 bg-[#AFBACA]"></div>
-      } }
+      } } }
     </div>
   </div>
 

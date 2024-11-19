@@ -3,7 +3,7 @@ import { ChatComponent } from './modules/chat/chat.component';
 import { HomeComponent as RouterHomeComponent } from './modules/home/home.component';
 import { HistoricComponent } from './modules/home/pages/historic/historic.component';
 import { HomeComponent } from './modules/home/pages/home/home.component';
-import { TemplatesComponent } from './modules/home/pages/templates/templates.component';
+import { TemplatesComponent } from './modules/home/pages/template/templates.component';
 import { SigninComponent } from './modules/signin/signin.component';
 import { SignupComponent } from './modules/signup/signup.component';
 import { authGuard } from './shared/guards/auth.guard';
